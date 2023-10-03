@@ -16,6 +16,22 @@ class MonticuloBinario:
         self.tamanio+= 1
         self.adelantar(self.tamanio)
 
-    def 
+    def infiltAbajo(self,i):
+        while (i * 2) <= self.tamanoActual:
+           hm = self.hijoMin(i)
+           if self.listaMonticulo[i] > self.listaMonticulo[hm]:
+              tmp = self.listaMonticulo[i]
+              self.listaMonticulo[i] = self.listaMonticulo[hm]
+              self.listaMonticulo[hm] = tmp
+           i = hm
+
+    def hijoMin(self,i):
+        if i * 2 + 1 > self.tamanoActual:
+           return i * 2
+        else:
+           if self.listaMonticulo[i*2] < self.listaMonticulo[i*2+1]:
+              return i * 2
+           else:
+              return i * 2 + 1
 
     

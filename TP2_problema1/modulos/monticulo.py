@@ -16,4 +16,6 @@ class MonticuloBinario:
         self.tamanio+= 1
         self.adelantar(self.tamanio)
 
+    def 
+
     

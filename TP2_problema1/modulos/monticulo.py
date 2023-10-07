@@ -14,7 +14,7 @@ class MonticuloBinario:
     def insertar (self, paciente):
         self.lista_pacientes.append(paciente)
         self.tamanio+= 1
-        self.adelantar(self.tamanio)
+        self.infiltrar_arriba(self.tamanio)
 
     def infiltrar_abajo(self,i):
         while (i * 2) <= self.tamanio:
@@ -48,4 +48,4 @@ class MonticuloBinario:
         self.lista_pacientes= [0] + lista[:]
         while (i > 0):
             self.infiltrar_abajo(i)
-            i= i - 1
+            i-= 1

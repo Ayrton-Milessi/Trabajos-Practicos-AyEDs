@@ -5,9 +5,8 @@ apellidos= ["Gutierrez", "Gonzalez", "Aguirre", "Rodriguez", "Messi", "Palacios"
 nivel_riesgo= [1,2,3]
 
 class Paciente:
-    def _init__ (self):
+    def __init__ (self):
         indice= len(nombres)
-        self.nombre= r.randint(0, indice)
-        self.apellido= r.randint(0, indice)
-        self.riesgo= nivel_riesgo[r.randint(0,2)]
-        
+        self.nombre= r.choice(nombres)
+        self.apellido= r.choice(apellidos)
+        self.riesgo= r.choice(nivel_riesgo)

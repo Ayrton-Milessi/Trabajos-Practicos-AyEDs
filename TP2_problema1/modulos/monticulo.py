@@ -49,3 +49,7 @@ class MonticuloBinario:
         while (i > 0):
             self.infiltrar_abajo(i)
             i-= 1
+
+    def __iter__(self):
+        for i in range(1,len(self.lista_pacientes)):
+            yield self.lista_pacientes[i]        

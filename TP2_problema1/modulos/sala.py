@@ -1,4 +1,4 @@
-from monticulo import MonticuloBinario
+from .monticulo import MonticuloBinario
 
 class sala_de_emergencia:
     def __init__(self):

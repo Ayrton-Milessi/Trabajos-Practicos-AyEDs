@@ -43,3 +43,20 @@ class Nodo_AVL:
 
    def tiene_dos_hijos(self):
       return self.hijo_derecho and self.hijo_izquierdo
+
+   def remplazar_dato_nodo(self, clave, valor, h_izq, h_der):
+      self.clave= clave
+      self.carga_util= valor
+      self.hijo_izquierdo= h_izq
+      self.hijo_derecho= h_der
+      if self.tiene_hijo_izquierdo():
+          self.hijo_izquierdo.padre = self
+      if self.tiene_hijo_derecho():
+          self.hijo_derecho.padre = self
+
+   def agregar(self,clave, valor):
+      if self.raiz:
+         self._agregar(clave, valor, self.raiz)
+      else:
+         self.raiz= Nodo_AVL (clave, valor)
+      self.tamanio += 1

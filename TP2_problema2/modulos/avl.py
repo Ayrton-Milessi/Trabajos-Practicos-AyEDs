@@ -31,3 +31,15 @@ class Nodo_AVL:
 
    def es_hijo_derecho(self):
      return self.padre and self.padre.hijo_derecjo == self
+
+   def es_raiz(self):
+     return not self.padre
+
+   def es_hoja(self):
+     return not (self.hijo_derecho or self.hijo_izquierdo)
+
+   def tiene_un_hijo(self):
+      return self.hijo_derecho or self.hijo_izquierdo
+
+   def tiene_dos_hijos(self):
+      return self.hijo_derecho and self.hijo_izquierdo

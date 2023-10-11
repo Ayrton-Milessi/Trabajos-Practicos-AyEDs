@@ -4,9 +4,9 @@ Sala de emergencias
 
 import time
 import datetime
+import random
 from TP2_problema1.modulos.paciente import Paciente
 from TP2_problema1.modulos.sala import sala_de_emergencia
-import random
 
 n = 20 # cantidad de ciclos de simulación
 

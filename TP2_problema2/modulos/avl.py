@@ -119,3 +119,15 @@ class AVL:
 
    def _obtener(self,clave,nodoActual):
        pass
+   
+   def __getitem__(self,clave):
+       return self.obtener(clave)
+
+   def __contains__(self,clave):
+       if self._obtener(clave,self.raiz):
+           return True
+       else:
+           return False
+       
+   def __delitem__(self,clave):
+       self.eliminar(clave)

@@ -20,9 +20,7 @@ class Paciente:
         return self._riesgo
     
     def __str__(self):
-        aux = self._nombre + ' '
-        aux += self._apellido + '\t -> '
-        aux += str(self._riesgo)
+        aux = self._nombre + ' '+ self._apellido + '  ' + ' ->   '+ str(self._riesgo)
         return aux
     
     def __lt__(self, paciente_comparar):

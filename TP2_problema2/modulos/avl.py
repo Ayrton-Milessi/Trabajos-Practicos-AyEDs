@@ -143,6 +143,38 @@ class AVL:
    def _obtener(self,clave,nodoActual):
        pass
    
+   def rotarIzquierda(self, rotRaiz):
+    nuevaRaiz= rotRaiz.hijo_derecho
+    rotRaiz.hijo_derecho= nuevaRaiz.hijo_izquierdo
+    if nuevaRaiz.hijo_izquierdo != None:
+        nuevaRaiz.hijo_izquierdo.padre= rotRaiz
+    nuevaRaiz.padre= rotRaiz.padre
+    if rotRaiz.es_raiz():
+        self.raiz= nuevaRaiz
+    else:
+        if rotRaiz.es_hijo_izquierdo():
+                rotRaiz.padre.hijo_izquierdo= nuevaRaiz
+        else:
+            rotRaiz.padre.hijo_derecho= nuevaRaiz
+    nuevaRaiz.hijo_izquierdo= rotRaiz
+    rotRaiz.padre= nuevaRaiz
+    rotRaiz.factor_equilibrio= rotRaiz.factor_equilibrio + 1 - min(nuevaRaiz.factor_equilibrio, 0)
+    nuevaRaiz.factor_equilibrio= nuevaRaiz.factor_equilibrio + 1 + max(rotRaiz.factor_equilibrio, 0)
+   
+   def rotarDerecha(self, rotRaiz):
+       nuevaRaiz= rotRaiz.hijo_izquierdo
+       rotRaiz.hijo_izquierdo= nuevaRaiz.hijo_derecho
+       if nuevaRaiz.hijo_derecho != None:
+           nuevaRaiz.hijo_derecho.padre= rotRaiz
+       nuevaRaiz.padre= rotRaiz.padre
+       if rotRaiz.es_raiz():
+           self.raiz= nuevaRaiz
+       else:
+           if rotRaiz.es_hijo_derecho():
+               rotRaiz.padre.hijo_derecho= nuevaRaiz
+           else:
+               rotRaiz.padre.hijo_derecho= nuevaRaiz 
+
    def __getitem__(self,clave):
        return self.obtener(clave)
 

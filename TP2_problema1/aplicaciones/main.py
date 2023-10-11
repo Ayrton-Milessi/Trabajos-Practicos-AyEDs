@@ -4,9 +4,9 @@ Sala de emergencias
 
 import time
 import datetime
+import random
 from TP2_problema1.modulos.paciente import Paciente
 from TP2_problema1.modulos.sala import sala_de_emergencia
-import random
 
 n = 20 # cantidad de ciclos de simulación
 
@@ -47,5 +47,3 @@ for i in range(n):
     print('-*-'*15)
     
     time.sleep(1)
-
-#me falta arreglar como muestra por la consola y preguntar si esta bien el atender paciente

@@ -1,84 +1,84 @@
 class Nodo_AVL:
    def __init__(self, clave, valor, izquierdo= None, derecho= None, padre= None):
      self.clave= clave
-     self.carga_util= valor
-     self.hijo_izquierdo= izquierdo
-     self.hijo_derecho= derecho
+     self.cargaUtil= valor
+     self.hijoIzquierdo= izquierdo
+     self.hijoDerecho= derecho
      self.padre= padre
      self.factor_equilibrio= 0
 
-   def tiene_hijo_izquierdo(self):
-     return self.hijo_izquierdo
+   def tiene_hijoIzquierdo(self):
+     return self.hijoIzquierdo
 
-   def tiene_hijo_derecho(self):
-     return self.hijo_derecho
+   def tiene_hijoDerecho(self):
+     return self.hijoDerecho
 
-   def es_hijo_izquierdo(self):
-     return self.padre and self.padre.hijo_izquierdo == self
+   def es_hijoIzquierdo(self):
+     return self.padre and self.padre.hijoIzquierdo == self
 
-   def es_hijo_derecho(self):
-     return self.padre and self.padre.hijo_derecho == self
+   def es_hijoDerecho(self):
+     return self.padre and self.padre.hijoDerecho == self
 
    def es_raiz(self):
      return not self.padre
 
-   def es_hoja(self):
-     return not (self.hijo_derecho or self.hijo_izquierdo)
+   def esHoja(self):
+     return not (self.hijoDerecho or self.hijoIzquierdo)
 
    def tiene_un_hijo(self):
-      return self.hijo_derecho or self.hijo_izquierdo
+      return self.hijoDerecho or self.hijoIzquierdo
 
    def tiene_dos_hijos(self):
-      return self.hijo_derecho and self.hijo_izquierdo
+      return self.hijoDerecho and self.hijoIzquierdo
 
    def remplazar_dato_nodo(self, clave, valor, h_izq, h_der):
       self.clave= clave
-      self.carga_util= valor
-      self.hijo_izquierdo= h_izq
-      self.hijo_derecho= h_der
-      if self.tiene_hijo_izquierdo():
-          self.hijo_izquierdo.padre = self
-      if self.tiene_hijo_derecho():
-          self.hijo_derecho.padre = self
+      self.cargaUtil= valor
+      self.hijoIzquierdo= h_izq
+      self.hijoDerecho= h_der
+      if self.tiene_hijoIzquierdo():
+          self.hijoIzquierdo.padre = self
+      if self.tiene_hijoDerecho():
+          self.hijoDerecho.padre = self
   
    def empalmar(self):
-      if self.es_hoja():
-          if self.es_hijo_izquierdo():
-              self.padre.hijo_izquierdo= None
+      if self.esHoja():
+          if self.es_hijoIzquierdo():
+              self.padre.hijoIzquierdo= None
           else:
-              self.padre.hijo_derecho= None
+              self.padre.hijoDerecho= None
       elif self.tiene_un_hijo():
-          if self.tiene_hijo_izquierdo():
-              if self.es_hijo_izquierdo():
-                  self.padre.hijo_izquierdo= self.hijo_izquierdo
+          if self.tiene_hijoIzquierdo():
+              if self.es_hijoIzquierdo():
+                  self.padre.hijoIzquierdo= self.hijoIzquierdo
               else:
-                  self.padre.hijo_derecho= self.hijo_izquierdo
-              self.hijo_izquierdo.padre= self.padre
+                  self.padre.hijoDerecho= self.hijoIzquierdo
+              self.hijoIzquierdo.padre= self.padre
           else:
-              if self.es_hijo_izquierdo():
-                  self.padre.hijo_izquierdo= self.hijo_derecho
+              if self.es_hijoIzquierdo():
+                  self.padre.hijoIzquierdo= self.hijoDerecho
               else:
-                  self.padre.hijo_derecho= self.hijo_derecho
-              self.hijo_derecho.padre= self.padre
+                  self.padre.hijoDerecho= self.hijoDerecho
+              self.hijoDerecho.padre= self.padre
 
    def encontrar_sucesor(self):
       sucesor= None
-      if self.tiene_hijo_derecho():
-          sucesor= self.hijo_derecho.encontrar_minimo()
+      if self.tiene_hijoDerecho():
+          sucesor= self.hijoDerecho.encontrar_minimo()
       else:
           if self.padre:
-            if self.es_hijo_izquierdo():
+            if self.es_hijoIzquierdo():
               sucesor= self.padre
             else:
-              self.padre.hijo_derecho= None
+              self.padre.hijoDerecho= None
               sucesor= self.padre.encontrar_sucesor()
-              self.padre.hijo_derecho = self
+              self.padre.hijoDerecho = self
       return sucesor
 
    def encontrar_minimo(self):
       actual= self
-      while actual.tiene_hijo_izquierdo():
-          actual= actual.hijo_izquierdo
+      while actual.tiene_hijoIzquierdo():
+          actual= actual.hijoIzquierdo
       return actual
 
 class AVL:
@@ -95,26 +95,26 @@ class AVL:
 
    def _agregar(self, clave, valor, nodoActual):
     if clave < nodoActual.clave:
-        if nodoActual.tiene_hijo_izquierdo():
-                self._agregar(clave, valor, nodoActual.hijo_izquierdo)
+        if nodoActual.tiene_hijoIzquierdo():
+                self._agregar(clave, valor, nodoActual.hijoIzquierdo)
         else:
-                nodoActual.hijo_izquierdo= Nodo_AVL(clave, valor, padre=nodoActual)
-                self.actualizar_equilibrio(nodoActual.hijo_izquierdo)
+                nodoActual.hijoIzquierdo= Nodo_AVL(clave, valor, padre=nodoActual)
+                self.actualizar_equilibrio(nodoActual.hijoIzquierdo)
     else:
-        if nodoActual.tiene_hijo_derecho():
-                self._agregar(clave, valor, nodoActual.hijo_derecho)
+        if nodoActual.tiene_hijoDerecho():
+                self._agregar(clave, valor, nodoActual.hijoDerecho)
         else:
-                nodoActual.hijo_derecho = Nodo_AVL(clave, valor, padre=nodoActual)
-                self.actualizar_equilibrio(nodoActual.hijo_derecho)
+                nodoActual.hijoDerecho = Nodo_AVL(clave, valor, padre=nodoActual)
+                self.actualizar_equilibrio(nodoActual.hijoDerecho)
 
    def actualizar_equilibrio(self, nodo):
     if nodo.factor_equilibrio > 1 or nodo.factor_equilibrio < -1:
         self.reequilibrar(nodo)
         return
     if nodo.padre != None:
-        if nodo.es_hijo_izquierdo():
+        if nodo.es_hijoIzquierdo():
                 nodo.padre.factor_equilibrio += 1
-        elif nodo.es_hijo_derecho():
+        elif nodo.es_hijoDerecho():
                 nodo.padre.factor_equilibrio -= 1
         if nodo.padre.factor_equilibrio != 0:
                 self.actualizar_equilibrio(nodo.padre)
@@ -123,7 +123,7 @@ class AVL:
        if self.raiz:
            resultado= self._obtener(clave, self.raiz)
            if resultado:
-                  return resultado.carga_util
+                  return resultado.cargaUtil
            else:
                   return None
        else:
@@ -133,51 +133,51 @@ class AVL:
        pass
    
    def rotarIzquierda(self, rotRaiz):
-    nuevaRaiz= rotRaiz.hijo_derecho
-    rotRaiz.hijo_derecho= nuevaRaiz.hijo_izquierdo
-    if nuevaRaiz.hijo_izquierdo != None:
-        nuevaRaiz.hijo_izquierdo.padre= rotRaiz
+    nuevaRaiz= rotRaiz.hijoDerecho
+    rotRaiz.hijoDerecho= nuevaRaiz.hijoIzquierdo
+    if nuevaRaiz.hijoIzquierdo != None:
+        nuevaRaiz.hijoIzquierdo.padre= rotRaiz
     nuevaRaiz.padre= rotRaiz.padre
     if rotRaiz.es_raiz():
         self.raiz= nuevaRaiz
     else:
-        if rotRaiz.es_hijo_izquierdo():
-                rotRaiz.padre.hijo_izquierdo= nuevaRaiz
+        if rotRaiz.es_hijoIzquierdo():
+                rotRaiz.padre.hijoIzquierdo= nuevaRaiz
         else:
-            rotRaiz.padre.hijo_derecho= nuevaRaiz
-    nuevaRaiz.hijo_izquierdo= rotRaiz
+            rotRaiz.padre.hijoDerecho= nuevaRaiz
+    nuevaRaiz.hijoIzquierdo= rotRaiz
     rotRaiz.padre= nuevaRaiz
     rotRaiz.factor_equilibrio= rotRaiz.factor_equilibrio + 1 - min(nuevaRaiz.factor_equilibrio, 0)
     nuevaRaiz.factor_equilibrio= nuevaRaiz.factor_equilibrio + 1 + max(rotRaiz.factor_equilibrio, 0)
    
    def rotarDerecha(self, rotRaiz):
-       nuevaRaiz= rotRaiz.hijo_izquierdo
-       rotRaiz.hijo_izquierdo= nuevaRaiz.hijo_derecho
-       if nuevaRaiz.hijo_derecho != None:
-           nuevaRaiz.hijo_derecho.padre= rotRaiz
+       nuevaRaiz= rotRaiz.hijoIzquierdo
+       rotRaiz.hijoIzquierdo= nuevaRaiz.hijoDerecho
+       if nuevaRaiz.hijoDerecho != None:
+           nuevaRaiz.hijoDerecho.padre= rotRaiz
        nuevaRaiz.padre= rotRaiz.padre
        if rotRaiz.es_raiz():
            self.raiz= nuevaRaiz
        else:
-           if rotRaiz.es_hijo_izquierdo():
-               rotRaiz.padre.hijo_izquierdo= nuevaRaiz
+           if rotRaiz.es_hijoIzquierdo():
+               rotRaiz.padre.hijoIzquierdo= nuevaRaiz
            else:
-               rotRaiz.padre.hijo_derecho= nuevaRaiz
-       nuevaRaiz.hijo_derecho= rotRaiz
+               rotRaiz.padre.hijoDerecho= nuevaRaiz
+       nuevaRaiz.hijoDerecho= rotRaiz
        rotRaiz.padre= nuevaRaiz
        rotRaiz.factor_equilibrio= rotRaiz.factor_equilibrio - 1 - max(nuevaRaiz.factor_equilibrio, 0)
        nuevaRaiz.factor_equilibrio= nuevaRaiz.factor_equilibrio - 1 + max(rotRaiz.factor_equilibrio, 0)
 
    def reequilibrar(self, nodo):
     if nodo.factor_equilibrio < 0:
-            if nodo.hijo_derecho.factor_equilibrio > 0:
-                self.rotarDerecha(nodo.hijo_derecho)
+            if nodo.hijoDerecho.factor_equilibrio > 0:
+                self.rotarDerecha(nodo.hijoDerecho)
                 self.rotarIzquierda(nodo)
             else:
                 self.rotarIzquierda(nodo)
     elif nodo.factor_equilibrio > 0:
-            if nodo.hijo_izquierdo.factor_equilibrio < 0:
-                self.rotarIzquierda(nodo.hijo_izquierdo)
+            if nodo.hijoIzquierdo.factor_equilibrio < 0:
+                self.rotarIzquierda(nodo.hijoIzquierdo)
                 self.rotarDerecha(nodo)
             else:
                 self.rotarDerecha(nodo)

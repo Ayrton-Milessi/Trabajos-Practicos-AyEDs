@@ -182,6 +182,12 @@ class AVL:
             else:
                 self.rotarDerecha(nodo)
 
+   def inorden(self, avl):
+     if avl is not None:
+        self.inorden(avl.hijoIzquierdo)
+        print(avl.clave, avl.cargaUtil)
+        self.inorden(avl.hijoDerecho)
+   
    def __getitem__(self,clave):
        return self.obtener(clave)
 

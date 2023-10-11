@@ -190,12 +190,6 @@ class AVL:
                 self.rotarDerecha(nodo)
             else:
                 self.rotarDerecha(nodo)
-
-   def inorden(self, avl):
-     if avl is not None:
-        self.inorden(avl.hijoIzquierdo)
-        print(avl.clave, avl.cargaUtil)
-        self.inorden(avl.hijoDerecho)
    
    def __getitem__(self,clave):
        return self.obtener(clave)
@@ -216,5 +210,9 @@ class AVL:
        return self.tamano
 
    def __iter__(self):
-       return self.raiz.__iter__()
+       return self._inorden(self.raiz)
    
+   def _inorden(self, avl):
+        if avl is not None: # Verifico si el nodo actual (avl) no es None
+            yield from self._inorden(avl.hijoIzquierdo)
+            yield from self._inorden(avl.hijoDerecho)

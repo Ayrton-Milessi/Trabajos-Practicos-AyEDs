@@ -102,7 +102,30 @@ class AVL:
         self.tamanIo += 1
 
    def _agregar(self, clave, valor, nodoActual):
-      pass
+    if clave < nodoActual.clave:
+        if nodoActual.tiene_hijo_izquierdo():
+                self._agregar(clave, valor, nodoActual.hijo_izquierdo)
+        else:
+                nodoActual.hijo_izquierdo= Nodo_AVL(clave, valor, padre=nodoActual)
+                self.actualizar_equilibrio(nodoActual.hijo_izquierdo)
+    else:
+        if nodoActual.tiene_hijo_derecho():
+                self._agregar(clave, valor, nodoActual.hijo_derecho)
+        else:
+                nodoActual.hijo_derecho = Nodo_AVL(clave, valor, padre=nodoActual)
+                self.actualizar_equilibrio(nodoActual.hijo_derecho)
+
+   def actualizar_equilibrio(self, nodo):
+    if nodo.factor_equilibrio > 1 or nodo.factor_equilibrio < -1:
+        self.reequilibrar(nodo)
+        return
+    if nodo.padre != None:
+        if nodo.es_hijo_izquierdo():
+                nodo.padre.factor_equilibrio += 1
+        elif nodo.es_hijo_derecho():
+                nodo.padre.factor_equilibrio -= 1
+        if nodo.padre.factor_equilibrio != 0:
+                self.actualizar_equilibrio(nodo.padre)
    
    def __setitem__(self,c,v):
        self.agregar(c,v)

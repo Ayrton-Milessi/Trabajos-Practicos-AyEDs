@@ -47,5 +47,3 @@ for i in range(n):
     print('-*-'*15)
     
     time.sleep(1)
-
-#me falta arreglar como muestra por la consola y preguntar si esta bien el atender paciente

@@ -2,14 +2,14 @@
 
 
 import unittest
-from modulos.abb import ABB
+from TP2_problema2.modulos.avl import AVL
 import numpy as np
 
 
 class Testabb(unittest.TestCase):
     
     def setUp(self):
-        self.abb = ABB()
+        self.abb = AVL()
     
     def agregar_claves(self, *args):
         for value in args:

@@ -5,6 +5,7 @@ class Nodo_AVL:
      self.hijo_izquierdo= izquierdo
      self.hijo_derecho= derecho
      self.padre= padre
+     self.factor_equilibrio= 0
 
    def tiene_hijo_izquierdo(self):
      return self.hijo_izquierdo
@@ -83,23 +84,14 @@ class Nodo_AVL:
 class AVL:
    def __init__(self):
        self.raiz= None
-       self.tamanio= 0
-
-   def longitud(self):
-        return self.tamanio
-
-   def __len__(self):
-       return self.tamanio
-
-   def __iter__(self):
-       return self.raiz.__iter__()
+       self.tamano= 0
 
    def agregar(self, clave, valor):
         if self.raiz:
             self._agregar(clave, valor, self.raiz)
         else:
             self.raiz= Nodo_AVL(clave, valor)
-        self.tamanIo += 1
+        self.tamano += 1
 
    def _agregar(self, clave, valor, nodoActual):
     if clave < nodoActual.clave:
@@ -126,9 +118,6 @@ class AVL:
                 nodo.padre.factor_equilibrio -= 1
         if nodo.padre.factor_equilibrio != 0:
                 self.actualizar_equilibrio(nodo.padre)
-   
-   def __setitem__(self,c,v):
-       self.agregar(c,v)
     
    def obtener(self, clave):
        if self.raiz:
@@ -143,37 +132,33 @@ class AVL:
    def _obtener(self,clave,nodoActual):
        pass
    
-   def rotarIzquierda(self, rotRaiz):
-    nuevaRaiz= rotRaiz.hijo_derecho
-    rotRaiz.hijo_derecho= nuevaRaiz.hijo_izquierdo
-    if nuevaRaiz.hijo_izquierdo != None:
-        nuevaRaiz.hijo_izquierdo.padre= rotRaiz
-    nuevaRaiz.padre= rotRaiz.padre
-    if rotRaiz.es_raiz():
-        self.raiz= nuevaRaiz
-    else:
-        if rotRaiz.es_hijo_izquierdo():
-                rotRaiz.padre.hijo_izquierdo= nuevaRaiz
+    
+   def rotarIzquierda(self,rotRaiz):
+        nuevaRaiz = rotRaiz.hijoDerecho
+        rotRaiz.hijoDerecho = nuevaRaiz.hijoIzquierdo
+        if nuevaRaiz.hijoIzquierdo != None:
+            nuevaRaiz.hijoIzquierdo.padre = rotRaiz
+        nuevaRaiz.padre = rotRaiz.padre
+        if rotRaiz.esRaiz():
+            self.raiz = nuevaRaiz
         else:
-            rotRaiz.padre.hijo_derecho= nuevaRaiz
-    nuevaRaiz.hijo_izquierdo= rotRaiz
-    rotRaiz.padre= nuevaRaiz
-    rotRaiz.factor_equilibrio= rotRaiz.factor_equilibrio + 1 - min(nuevaRaiz.factor_equilibrio, 0)
-    nuevaRaiz.factor_equilibrio= nuevaRaiz.factor_equilibrio + 1 + max(rotRaiz.factor_equilibrio, 0)
-   
-   def rotarDerecha(self, rotRaiz):
-       nuevaRaiz= rotRaiz.hijo_izquierdo
-       rotRaiz.hijo_izquierdo= nuevaRaiz.hijo_derecho
-       if nuevaRaiz.hijo_derecho != None:
-           nuevaRaiz.hijo_derecho.padre= rotRaiz
-       nuevaRaiz.padre= rotRaiz.padre
-       if rotRaiz.es_raiz():
-           self.raiz= nuevaRaiz
-       else:
-           if rotRaiz.es_hijo_derecho():
-               rotRaiz.padre.hijo_derecho= nuevaRaiz
-           else:
-               rotRaiz.padre.hijo_derecho= nuevaRaiz 
+            if rotRaiz.esHijoIzquierdo():
+                    rotRaiz.padre.hijoIzquierdo = nuevaRaiz
+            else:
+                rotRaiz.padre.hijoDerecho = nuevaRaiz
+        nuevaRaiz.hijoIzquierdo = rotRaiz
+        rotRaiz.padre = nuevaRaiz
+        rotRaiz.factorEquilibrio = rotRaiz.factorEquilibrio + 1 - min(nuevaRaiz.factorEquilibrio, 0)
+        nuevaRaiz.factorEquilibrio = nuevaRaiz.factorEquilibrio + 1 + max(rotRaiz.factorEquilibrio, 0)
+
+
+
+   def rotarDercha(self,rotRaiz):
+       pass
+
+
+   def __setitem__(self,c,v):
+       self.agregar(c,v)
 
    def __getitem__(self,clave):
        return self.obtener(clave)
@@ -183,6 +168,12 @@ class AVL:
            return True
        else:
            return False
-       
+
    def __delitem__(self,clave):
        self.eliminar(clave)
+
+   def __len__(self):
+       return self.tamano
+
+   def __iter__(self):
+       return self.raiz.__iter__()

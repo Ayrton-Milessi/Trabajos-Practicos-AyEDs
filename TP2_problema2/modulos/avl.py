@@ -84,16 +84,7 @@ class Nodo_AVL:
 class AVL:
    def __init__(self):
        self.raiz= None
-       self.tamanio= 0
-
-   def longitud(self):
-        return self.tamanio
-
-   def __len__(self):
-       return self.tamanio
-
-   def __iter__(self):
-       return self.raiz.__iter__()
+       self.tamano = 0
 
    def agregar(self, clave, valor):
         if self.raiz:

@@ -5,6 +5,7 @@ class Nodo_AVL:
      self.hijo_izquierdo= izquierdo
      self.hijo_derecho= derecho
      self.padre= padre
+     self.factor_equilibrio= 0
 
    def tiene_hijo_izquierdo(self):
      return self.hijo_izquierdo
@@ -85,9 +86,6 @@ class AVL:
        self.raiz= None
        self.tamanio= 0
 
-   def longitud(self):
-        return self.tamanio
-
    def __len__(self):
        return self.tamanio
 
@@ -143,23 +141,26 @@ class AVL:
    def _obtener(self,clave,nodoActual):
        pass
    
+   def eliminar(self, clave):
+       pass
+   
    def rotarIzquierda(self, rotRaiz):
-    nuevaRaiz= rotRaiz.hijo_derecho
-    rotRaiz.hijo_derecho= nuevaRaiz.hijo_izquierdo
-    if nuevaRaiz.hijo_izquierdo != None:
-        nuevaRaiz.hijo_izquierdo.padre= rotRaiz
-    nuevaRaiz.padre= rotRaiz.padre
-    if rotRaiz.es_raiz():
-        self.raiz= nuevaRaiz
-    else:
-        if rotRaiz.es_hijo_izquierdo():
-                rotRaiz.padre.hijo_izquierdo= nuevaRaiz
+        nuevaRaiz= rotRaiz.hijo_derecho
+        rotRaiz.hijo_derecho= nuevaRaiz.hijo_izquierdo
+        if nuevaRaiz.hijo_izquierdo != None:
+            nuevaRaiz.hijo_izquierdo.padre= rotRaiz
+        nuevaRaiz.padre= rotRaiz.padre
+        if rotRaiz.es_raiz():
+            self.raiz= nuevaRaiz
         else:
-            rotRaiz.padre.hijo_derecho= nuevaRaiz
-    nuevaRaiz.hijo_izquierdo= rotRaiz
-    rotRaiz.padre= nuevaRaiz
-    rotRaiz.factor_equilibrio= rotRaiz.factor_equilibrio + 1 - min(nuevaRaiz.factor_equilibrio, 0)
-    nuevaRaiz.factor_equilibrio= nuevaRaiz.factor_equilibrio + 1 + max(rotRaiz.factor_equilibrio, 0)
+            if rotRaiz.es_hijo_izquierdo():
+                    rotRaiz.padre.hijo_izquierdo= nuevaRaiz
+            else:
+                rotRaiz.padre.hijo_derecho= nuevaRaiz
+        nuevaRaiz.hijo_izquierdo= rotRaiz
+        rotRaiz.padre= nuevaRaiz
+        rotRaiz.factor_equilibrio= rotRaiz.factor_equilibrio + 1 - min(nuevaRaiz.factor_equilibrio, 0)
+        nuevaRaiz.factor_equilibrio= nuevaRaiz.factor_equilibrio + 1 + max(rotRaiz.factor_equilibrio, 0)
    
    def rotarDerecha(self, rotRaiz):
        nuevaRaiz= rotRaiz.hijo_izquierdo
@@ -170,11 +171,29 @@ class AVL:
        if rotRaiz.es_raiz():
            self.raiz= nuevaRaiz
        else:
-           if rotRaiz.es_hijo_derecho():
-               rotRaiz.padre.hijo_derecho= nuevaRaiz
+           if rotRaiz.es_hijo_izquierdo():
+               rotRaiz.padre.hijo_izquierdo= nuevaRaiz
            else:
-               rotRaiz.padre.hijo_derecho= nuevaRaiz 
+               rotRaiz.padre.hijo_derecho= nuevaRaiz
+       nuevaRaiz.hijo_derecho= rotRaiz
+       rotRaiz.padre= nuevaRaiz
+       rotRaiz.factor_equilibrio= rotRaiz.factor_equilibrio - 1 - max(nuevaRaiz.factor_equilibrio, 0)
+       nuevaRaiz.factor_equilibrio= nuevaRaiz.factor_equilibrio - 1 + max(rotRaiz.factor_equilibrio, 0)
 
+   def reequilibrar(self, nodo):
+    if nodo.factor_equilibrio < 0:
+            if nodo.hijo_derecho.factor_equilibrio > 0:
+                self.rotarDerecha(nodo.hijo_derecho)
+                self.rotarIzquierda(nodo)
+            else:
+                self.rotarIzquierda(nodo)
+    elif nodo.factor_equilibrio > 0:
+            if nodo.hijo_izquierdo.factor_equilibrio < 0:
+                self.rotarIzquierda(nodo.hijo_izquierdo)
+                self.rotarDerecha(nodo)
+            else:
+                self.rotarDerecha(nodo)
+   
    def __getitem__(self,clave):
        return self.obtener(clave)
 

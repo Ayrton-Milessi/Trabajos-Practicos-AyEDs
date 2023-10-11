@@ -129,9 +129,18 @@ class AVL:
        else:
            return None
 
+
    def _obtener(self,clave,nodoActual):
-       pass
-   
+    if not nodoActual:
+        return None
+    elif nodoActual.clave == clave:
+        return nodoActual
+    elif nodoActual.clave > clave:
+        return self._obtener(clave,nodoActual.hijoIzquierdo)
+    else:
+        return self._obtener(clave,nodoActual.hijoDerecho)
+
+
    def rotarIzquierda(self, rotRaiz):
     nuevaRaiz= rotRaiz.hijoDerecho
     rotRaiz.hijoDerecho= nuevaRaiz.hijoIzquierdo
@@ -200,8 +209,12 @@ class AVL:
    def __delitem__(self,clave):
        self.eliminar(clave)
 
+   def __setitem__(self, clave, valor):
+       self.agregar(clave, valor)
+
    def __len__(self):
        return self.tamano
 
    def __iter__(self):
        return self.raiz.__iter__()
+   

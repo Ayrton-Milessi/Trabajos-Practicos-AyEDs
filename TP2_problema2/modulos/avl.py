@@ -129,7 +129,6 @@ class AVL:
        else:
            return None
 
-
    def _obtener(self,clave,nodoActual):
     if not nodoActual:
         return None
@@ -140,6 +139,19 @@ class AVL:
     else:
         return self._obtener(clave,nodoActual.hijoDerecho)
 
+   def eliminar(self, clave):
+    if self.tamano > 1:
+        nodoAEliminar= self._obtener(clave, self.raiz)
+        if nodoAEliminar:
+            self.remover(nodoAEliminar)
+            self.tamano= self.tamano-1
+        else:
+            raise KeyError('Error, la clave no está en el árbol')
+    elif self.tamano == 1 and self.raiz.clave == clave:
+        self.raiz= None
+        self.tamano= self.tamano - 1
+    else:
+        raise KeyError('Error, la clave no está en el árbol')
 
    def rotarIzquierda(self, rotRaiz):
     nuevaRaiz= rotRaiz.hijoDerecho
@@ -191,20 +203,43 @@ class AVL:
             else:
                 self.rotarDerecha(nodo)
    
-   def __getitem__(self,clave):
-       return self.obtener(clave)
+   def remover (self, nodoActual):
+        if nodoActual.esHoja():
+            if nodoActual == nodoActual.padre.hijoIzquierdo:
+                nodoActual.padre.hijoIzquierdo= None
+            else:
+                nodoActual.padre.hijoDerecho= None
+        
+        elif nodoActual.tiene_un_hijo(): # este nodo tiene un (1) hijo
+            if nodoActual.tiene_hijoIzquierdo():
+                if nodoActual.es_hijoIzquierdo():
+                    nodoActual.hijoIzquierdo.padre= nodoActual.padre
+                    nodoActual.padre.hijoIzquierdo= nodoActual.hijoIzquierdo
+                elif nodoActual.es_hijoDerecho():
+                    nodoActual.hijoIzquierdo.padre= nodoActual.padre
+                    nodoActual.padre.hijoDerecho= nodoActual.hijoIzquierdo
+                else:
+                    nodoActual.remplazar_dato_nodo(nodoActual.hijoIzquierdo.clave, nodoActual.hijoIzquierdo.cargaUtil, nodoActual.hijoIzquierdo.hijoIzquierdo, nodoActual.hijoIzquierdo.hijoDerecho)
+            else:
+                if nodoActual.es_hijoIzquierdo():
+                    nodoActual.hijoDerecho.padre= nodoActual.padre
+                    nodoActual.padre.hijoIzquierdo= nodoActual.hijoDerecho
+                elif nodoActual.es_hijoDerecho():
+                    nodoActual.hijoDerecho.padre= nodoActual.padre
+                    nodoActual.padre.hijoDerecho= nodoActual.hijoDerecho
+                else:
+                    nodoActual.remplazar_dato_nodo(nodoActual.hijoDerecho.clave, nodoActual.hijoDerecho.cargaUtil, nodoActual.hijoDerecho.hijoIzquierdo, nodoActual.hijoDerecho.hijoDerecho)
 
-   def __contains__(self,clave):
-       if self._obtener(clave,self.raiz):
-           return True
-       else:
-           return False
+        else: #este nodo tiene dos hijos
+            aux= nodoActual.encontrar_sucesor()
+            aux.empalmar()
+            nodoActual.clave= aux.clave
+            nodoActual.cargaUtil= aux.cargaUtil
 
+#------------------------------------------------------------------------------------------------------------
+   
    def __delitem__(self,clave):
        self.eliminar(clave)
-
-   def __setitem__(self, clave, valor):
-       self.agregar(clave, valor)
 
    def __len__(self):
        return self.tamano
@@ -216,3 +251,15 @@ class AVL:
         if avl is not None: # Verifico si el nodo actual (avl) no es None
             yield from self._inorden(avl.hijoIzquierdo)
             yield from self._inorden(avl.hijoDerecho)
+   
+   def __getitem__(self,clave):
+       return self.obtener(clave)
+
+   def __contains__(self,clave):
+       if self._obtener(clave,self.raiz):
+           return True
+       else:
+           return False
+
+   def __setitem__(self, clave, valor):
+       self.agregar(clave, valor)

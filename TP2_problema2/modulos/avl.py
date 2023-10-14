@@ -1,5 +1,5 @@
 class Nodo_avl:
-    def __init__(self, valor, clave, izquierdo= None, derecho= None, padre= None):
+    def __init__(self, clave, valor, padre=None, izquierdo=None, derecho=None):
         self.clave= clave
         self.cargaUtil= valor
         self.hijoIzquierdo= izquierdo
@@ -241,8 +241,8 @@ class AVL:
     def __delitem__(self,clave):
         self.eliminar(clave)
 
-    def __len__(self):
-       return self.tamano
+    # def __len__(self):
+    #    return self.tamano
 
     def __iter__(self):
        return self._inorden(self.raiz)
@@ -252,14 +252,14 @@ class AVL:
             yield from self._inorden(avl.hijoIzquierdo)
             yield from self._inorden(avl.hijoDerecho)
    
-    def __getitem__(self,clave):
-       return self.obtener(clave)
+    # def __getitem__(self,clave):
+    #    return self.obtener(clave)
 
-    def __contains__(self,clave):
-       if self._obtener(clave,self.raiz):
-           return True
-       else:
-           return False
+    # def __contains__(self,clave):
+    #    if self._obtener(clave,self.raiz):
+    #        return True
+    #    else:
+    #        return False
 
-    def __setitem__(self, clave, valor):
-       self.agregar(clave, valor)
+    # def __setitem__(self, clave, valor):
+    #    self.agregar(clave, valor)

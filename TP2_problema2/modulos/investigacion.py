@@ -23,14 +23,15 @@ class TemperaturasDB:
         if nodo is None: # primero verificamos que el nodo exista para no realizar llamadas innecesarias
             return max_temp
 
-        nodo_clave_str = nodo.clave.strftime("%d/%m/%Y")
-        if fecha1 <= nodo_clave_str <= fecha2:
+        fecha1_objeto = datetime.strptime(fecha1, "%d/%m/%Y") #las fechas estaban en str, asique los pasamos a formato "datetime" para que las comparaciones funcionen
+        fecha2_objeto = datetime.strptime(fecha2, "%d/%m/%Y")
+        if fecha1_objeto <= nodo.clave <= fecha2_objeto:
             max_temp = max(max_temp, nodo.cargaUtil)
         
-        if fecha1 < nodo_clave_str:
+        if fecha1_objeto < nodo.clave:
             max_temp= self._max_temp_rango(nodo.hijoIzquierdo, fecha1, fecha2, max_temp)
 
-        if fecha2 > nodo_clave_str:
+        if fecha2_objeto > nodo.clave:
             max_temp= self._max_temp_rango(nodo.hijoDerecho, fecha1, fecha2, max_temp)
         
         return max_temp
@@ -43,14 +44,16 @@ class TemperaturasDB:
     def _min_temp_rango(self, nodo, fecha1, fecha2, min_temp):
         if nodo is None: # primero verificamos que el nodo exista para no realizar llamadas innecesarias
             return min_temp
-        nodo_clave_str = nodo.clave.strftime("%d/%m/%Y")
-        if fecha1 <= nodo_clave_str <= fecha2:
+        
+        fecha1_objeto = datetime.strptime(fecha1, "%d/%m/%Y") #las fechas estaban en str, asique los pasamos a formato "datetime" para que las comparaciones funcionen
+        fecha2_objeto = datetime.strptime(fecha2, "%d/%m/%Y")
+        if fecha1_objeto <= nodo.clave <= fecha2_objeto:
             min_temp = min(min_temp, nodo.cargaUtil)
         
-        if fecha1 < nodo_clave_str:
+        if fecha1_objeto < nodo.clave:
             min_temp= self._min_temp_rango(nodo.hijoIzquierdo, fecha1, fecha2, min_temp)
 
-        if fecha2 > nodo_clave_str:
+        if fecha2_objeto > nodo.clave:
             min_temp= self._min_temp_rango(nodo.hijoDerecho, fecha1, fecha2, min_temp)
         
         return min_temp

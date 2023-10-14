@@ -205,7 +205,7 @@ class AVL:
                 self.rotarDerecha(nodo)
 
 
-    def remover (self, nodoActual):
+    def remover(self, nodoActual):
         if nodoActual.esHoja():
             if nodoActual == nodoActual.padre.hijoIzquierdo:
                 nodoActual.padre.hijoIzquierdo= None
@@ -241,15 +241,13 @@ class AVL:
     def __delitem__(self,clave):
         self.eliminar(clave)
 
-    # def __len__(self):
-    #    return self.tamano
-
     def __iter__(self):
        return self._inorden(self.raiz)
    
     def _inorden(self, avl):
         if avl is not None: # Verifico si el nodo actual (avl) no es None
             yield from self._inorden(avl.hijoIzquierdo)
+            yield avl.clave
             yield from self._inorden(avl.hijoDerecho)
    
     # def __getitem__(self,clave):
@@ -263,3 +261,6 @@ class AVL:
 
     # def __setitem__(self, clave, valor):
     #    self.agregar(clave, valor)
+ 
+    # def __len__(self):
+    #    return self.tamano

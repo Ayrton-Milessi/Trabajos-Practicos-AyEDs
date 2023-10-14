@@ -1,30 +1,40 @@
 from TP2_problema2.modulos.avl import AVL
-import datatime
+import datetime
 
-class Temperaturas_DB:
+class TemperaturasDB:
     def __init__(self):
-        self.arbol= AVL()
+        self.avl= AVL()
 
-    def guardar_temperatura(self, temperatura, fecha):
-        self.arbol.agregar(temperatura, fecha)
 
-    def devolver_temperatura(self, fecha):
-        self.arbol.obtener(fecha)
+    def guardar_temperatura(self, temp, fecha):
+        objeto_fecha= datetime.strptime(fecha,"%d/%m/%Y") # especificamos que formato de fecha que queremos y lo convertimos en un objeto
+        self.avl.agregar(objeto_fecha,temp)
 
-    def max_temp_rango(self, fecha1, fecha2):
+    def devolver_temp(self, fecha):
+        objeto_fecha= datetime.strptime(fecha, "%d/%m/%Y")
+        temperatura= self.avl.obtener(objeto_fecha) # Buscamos la temperatura deseada
+        return temperatura
+
+    def max_temp_rango(self, fecha1,fecha2):
+        self
+
+    
+    def _max_temp_rango(self, nodo, fecha1, fecha2, max_temp):
+        if fecha1 <= nodo.clave <= fecha2:
+            max_temp = max(max_temp, nodo.cargaUtil)
+        
+        if fecha1 < nodo.clave:
+            pass
+        
+
+    def temp_extermos_rango(self, fecha1,fecha2):
         pass
 
-    def min_temp_rango(self, fecha1, fecha2):
+    def borrar_temperatura(fecha):
         pass
 
-    def temp_extremos_rango(self, fecha1, fecha2):
-        pass
-
-    def borrar_temperatura(self, fecha):
-        self.arbol.eliminar(fecha)
-
-    def devolver_temperaturas(self, fecha1, fecha2):
+    def devolver_temperaturas(fecha1, fecha2):
         pass
 
     def cantidad_muestras(self):
-        return len(self.arbol)
+        pass

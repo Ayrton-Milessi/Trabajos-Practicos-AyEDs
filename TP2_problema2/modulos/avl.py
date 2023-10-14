@@ -43,22 +43,25 @@ class Nodo_avl:
             self.hijoDerecho.padre = self
     
     def empalmar(self):
-        if self.esHoja():
+        if self.esHoja(): # Verificamos si es una hoja y lo eliminamos del arbol
             if self.es_hijoIzquierdo():
-                self.padre.hijoIzquierdo= None
+                self.padre.hijoIzquierdo= None #hacemos que el padre apunte a None
             else:
                 self.padre.hijoDerecho= None
+
         elif self.tiene_un_hijo():
             if self.tiene_hijoIzquierdo():
                 if self.es_hijoIzquierdo():
-                    self.padre.hijoIzquierdo= self.hijoIzquierdo
+                    self.padre.hijoIzquierdo= self.hijoIzquierdo #se ajusta el enlace para que el padre y el hijo izquierdo se apunten
+                
                 else:
                     self.padre.hijoDerecho= self.hijoIzquierdo
                 self.hijoIzquierdo.padre = self.padre
+            
             else:
                 self.padre.hijoDerecho= self.hijoDerecho
             self.hijoDerecho.padre= self.padre
-    
+
     def encontrar_minimo(self):
         actual= self
         while actual.tiene_hijoIzquierdo():
@@ -66,15 +69,15 @@ class Nodo_avl:
         return actual
             
     def encontrar_sucesor(self):
-        sucesor= None
+        sucesor = None
         if self.tiene_hijoDerecho():
-            sucesor= self.hijoDerecho.encontrar_minimo()
+            sucesor = self.hijoDerecho.encontrar_minimo()
+        elif self.es_hijoIzquierdo():
+            sucesor = self.padre
         else:
-            self.padre.hijoDerecho= None
-            sucesor= self.padre.encontrar_sucesor()
-            self.padre.hijoDerecho = self
+            sucesor = self.padre.encontrar_sucesor() # Si el nodo no tiene hijo derecho y no es hijo izquierdo, buscamos el sucesor en el padre
         return sucesor
-    
+
 
 class AVL:
     def __init__(self):
@@ -110,7 +113,7 @@ class AVL:
                 self.actualizar_equilibrio(nodoActual.hijoIzquierdo)
         else:
             if nodoActual.tiene_hijoDerecho():
-                self.actualizar_equilibrio(nodoActual.hijoDerecho)
+                self._agregar(clave, valor,nodoActual.hijoDerecho)
             else:
                 nodoActual.hijoDerecho= Nodo_avl(clave, valor, padre=nodoActual)
                 self.actualizar_equilibrio(nodoActual.hijoDerecho)

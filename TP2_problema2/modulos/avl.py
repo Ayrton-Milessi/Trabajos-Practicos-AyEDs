@@ -110,7 +110,7 @@ class AVL:
                 self.actualizar_equilibrio(nodoActual.hijoIzquierdo)
         else:
             if nodoActual.tiene_hijoDerecho():
-                self.actuallizar_equilibrio(nodoActual.hijoDerecho)
+                self.actualizar_equilibrio(nodoActual.hijoDerecho)
             else:
                 nodoActual.hijoDerecho= Nodo_avl(clave, valor, padre=nodoActual)
                 self.actualizar_equilibrio(nodoActual.hijoDerecho)

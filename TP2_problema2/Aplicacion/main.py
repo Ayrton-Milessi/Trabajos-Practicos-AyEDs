@@ -13,11 +13,20 @@ aux.guardar_temperatura(47,'01/11/2049')
 
 
 #Totalmente Funcional
+
 print(f"{aux.devolver_temp('01/09/2049')}°C")
+
 print(f'{aux.max_temp_rango("02/09/2049","01/11/2049")}°C')
 print(f'{aux.min_temp_rango("01/09/2049","01/11/2049")}°C')
 
+print(f'{aux.temp_extermos_rango("02/09/2049","01/11/2049")}°C')
 
 
+aux.devolver_temperaturas("03/09/2049","29/10/2049")
 
+print(f"cantidad de muestras en el AVL: {aux.cantidad_muestras()}")
+
+aux.borrar_temperatura('01/11/2049')
+
+print(f"cantidad de muestras en el AVL: {aux.cantidad_muestras()}") #podemos observar que se eliminó correctamente 
 

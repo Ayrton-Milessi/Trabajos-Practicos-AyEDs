@@ -23,33 +23,34 @@ class TemperaturasDB:
         if nodo is None: # primero verificamos que el nodo exista para no realizar llamadas innecesarias
             return max_temp
 
-        if fecha1 <= nodo.clave <= fecha2:
+        nodo_clave_str = nodo.clave.strftime("%d/%m/%Y")
+        if fecha1 <= nodo_clave_str <= fecha2:
             max_temp = max(max_temp, nodo.cargaUtil)
         
-        if fecha1 < nodo.clave:
+        if fecha1 < nodo_clave_str:
             max_temp= self._max_temp_rango(nodo.hijoIzquierdo, fecha1, fecha2, max_temp)
 
-        else:
+        if fecha2 > nodo_clave_str:
             max_temp= self._max_temp_rango(nodo.hijoDerecho, fecha1, fecha2, max_temp)
         
         return max_temp
     
     #Se realiza exactamente lo mismo pero buscando el minimo
     def min_temp_rango(self, fecha1, fecha2):
-        min_temp= float("-inf")
+        min_temp= float("inf")
         return self._min_temp_rango(self.avl.raiz, fecha1, fecha2, min_temp)
 
     def _min_temp_rango(self, nodo, fecha1, fecha2, min_temp):
         if nodo is None: # primero verificamos que el nodo exista para no realizar llamadas innecesarias
             return min_temp
-        
-        if fecha1 <= nodo.clave <= fecha2:
+        nodo_clave_str = nodo.clave.strftime("%d/%m/%Y")
+        if fecha1 <= nodo_clave_str <= fecha2:
             min_temp = min(min_temp, nodo.cargaUtil)
         
-        if fecha1 < nodo.clave:
+        if fecha1 < nodo_clave_str:
             min_temp= self._min_temp_rango(nodo.hijoIzquierdo, fecha1, fecha2, min_temp)
 
-        else:
+        if fecha2 > nodo_clave_str:
             min_temp= self._min_temp_rango(nodo.hijoDerecho, fecha1, fecha2, min_temp)
         
         return min_temp

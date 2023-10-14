@@ -59,18 +59,22 @@ class TemperaturasDB:
         return min_temp
 
     def temp_extermos_rango(self, fecha1, fecha2):
-        fecha1_objeto= datetime.strptime(fecha1, "%d/%m/%Y")
-        fecha2_objeto= datetime.strptime(fecha2, "%d/%m/%Y")
+        return self.min_temp_rango(fecha1, fecha2), self.max_temp_rango(fecha1,fecha2)
 
-        return self.min_temp(fecha1_objeto, fecha2_objeto), self.max_temp_rango(fecha1_objeto,fecha2_objeto)
+    def borrar_temperatura(self, fecha):
+        if fecha is None:
+            raise ValueError("Debe ingresar una fecha valida")
+        fecha_= datetime.strptime(fecha, "%d/%m/%Y")
+        self.avl.eliminar(fecha_)
 
-    def borrar_temperatura(fecha):
-        pass
+    def devolver_temperaturas(self, fecha1, fecha2):
+        fecha1_objeto = datetime.strptime(fecha1, "%d/%m/%Y") 
+        fecha2_objeto = datetime.strptime(fecha2, "%d/%m/%Y")
 
-    def devolver_temperaturas(fecha1, fecha2):
-        pass
+        for x in self.avl:
+            if x >= fecha1_objeto and x <= fecha2_objeto:
+                fecha_formateada = x.strftime("%d/%m/%Y") #Hago que la fecha se muestre como dia mes anio, ya que en formato datetime salia un 00:00:00 el cual no aportaba nada
+                print(f"{fecha_formateada}, temperatura: {self.avl.obtener(x)}")
 
     def cantidad_muestras(self):
-        pass
-
-
+        return self.avl.tamano

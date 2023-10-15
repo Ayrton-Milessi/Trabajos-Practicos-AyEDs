@@ -1,9 +1,9 @@
-from TP2_problema3.modulos import grafo
+from TP2_problema3.modulos.Grafo import Grafo
 # class ColaPrioridad:
 #     def __init__(self):
 #         pass
 
-aux= grafo()
+aux= Grafo()
 
 with open("rutas.txt", "r") as arch:
     archivo= arch.readlines()
@@ -15,7 +15,7 @@ with open("rutas.txt", "r") as arch:
         costo= dato[3]
 
 
-
+print(costo)
 
 
 

@@ -69,12 +69,20 @@ class Grafo:
         while not cp.estaVacia():
             verticeActual = cp.eliminarMin()
             for verticeSiguiente in verticeActual.obtenerConexiones():
-                nuevaDistancia = verticeActual.obtenerDistancia() \
-                        + verticeActual.obtenerPonderacion(verticeSiguiente)
+                nuevaDistancia = verticeActual.obtenerDistancia() + verticeActual.obtenerPonderacion(verticeSiguiente)
                 if nuevaDistancia < verticeSiguiente.obtenerDistancia():
                     verticeSiguiente.asignarDistancia( nuevaDistancia )
                     verticeSiguiente.asignarPredecesor(verticeActual)
                     cp.decrementarClave(verticeSiguiente,nuevaDistancia)
+
+    def caminoCorto(self, inicio, fin):
+        self.dijkstra(self, self.obtenerVertice(inicio)) #usa dijkstra para buscar el vecino más cercano del vertice 'inicio'
+        verticeActual= self.obtenerVertice(fin)
+        camino=[]
+        while verticeActual is not None:
+            camino.insert(0, verticeActual.obtenerId()) #inserta el vertice 'inicio' y va agregando los vertices (camino) hasta llegar a 'fin'
+            verticeActual= verticeActual.obtenerPredecesor() #desde el vertice 'fin' vamos retrociendo buscando el camino más corto
+        return camino
 
     def __iter__(self):
         return iter(self.listaVertices.values())

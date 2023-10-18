@@ -1,7 +1,10 @@
+from TP2_problema3.Modulos.Monticulo_2 import MonticuloBinario2
+
 class Vertice:
     def __init__(self,clave):
         self.id = clave
         self.conectadoA = {}
+        self.dist= float("inf")
 
     def agregarVecino(self,vecino,ponderacion=0):
         self.conectadoA[vecino] = ponderacion
@@ -48,6 +51,20 @@ class Grafo:
 
     def obtenerVertices(self):
         return self.listaVertices.keys()
+    
+    def dijkstra(unGrafo,inicio):
+        cp = MonticuloBinario2()
+        inicio.asignarDistancia(0)
+        cp.construirMonticulo([(v.obtenerDistancia(),v) for v in unGrafo])
+        while not cp.estaVacia():
+            verticeActual = cp.eliminarMin()
+            for verticeSiguiente in verticeActual.obtenerConexiones():
+                nuevaDistancia = verticeActual.obtenerDistancia() \
+                        + verticeActual.obtenerPonderacion(verticeSiguiente)
+                if nuevaDistancia < verticeSiguiente.obtenerDistancia():
+                    verticeSiguiente.asignarDistancia( nuevaDistancia )
+                    verticeSiguiente.asignarPredecesor(verticeActual)
+                    cp.decrementarClave(verticeSiguiente,nuevaDistancia)
 
     def __iter__(self):
         return iter(self.listaVertices.values())

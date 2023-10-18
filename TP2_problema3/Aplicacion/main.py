@@ -31,7 +31,7 @@ miGrafo= grafo
 for vertice in miGrafo.obtenerVertices():
     v = miGrafo.obtenerVertice(vertice)
     print(f"Vertice: {v.obtenerId()}")
-    print(f"Distancia desde el inicio: {v.obtenerDistancia()}")
+    print(f"Distancia desde el inicio: {v.obtenerDistancia()}") #agregar un condicional para cuando sea inf no imprima
     predecesor = v.obtenerPredecesor()
 
 

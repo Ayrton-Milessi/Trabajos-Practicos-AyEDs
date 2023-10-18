@@ -5,12 +5,10 @@ class Vertice:
         self.id = clave
         self.conectadoA = {}
         self.dist= float("inf")
+        self.predecesor= None
 
     def agregarVecino(self,vecino,ponderacion=0):
         self.conectadoA[vecino] = ponderacion
-
-    def __str__(self):
-        return str(self.id) + ' conectadoA: ' + str([x.id for x in self.conectadoA])
 
     def obtenerConexiones(self):
         return self.conectadoA.keys()
@@ -20,6 +18,21 @@ class Vertice:
 
     def obtenerPonderacion(self,vecino):
         return self.conectadoA[vecino]
+
+    def asignarDistancia(self, distancia):
+        self.dist= distancia
+    
+    def obtenerDistancia(self):
+        return self.dist
+    
+    def asignarPredecesor(self, predecesor):
+        self.predecesor= predecesor
+    
+    def obtenerPredecesor(self):
+        return self.predecesor
+    
+    def __str__(self):
+        return str(self.id) + ' conectadoA: ' + str([x.id for x in self.conectadoA])
 
 
 class Grafo:
@@ -39,20 +52,17 @@ class Grafo:
         else:
             return None
 
-    def __contains__(self,n):
-        return n in self.listaVertices
-
     def agregarArista(self,de,a,costo=0):
         if de not in self.listaVertices:
-            nv = self.agregarVertice(de)
+            self.agregarVertice(de)
         if a not in self.listaVertices:
-            nv = self.agregarVertice(a)
+            self.agregarVertice(a)
         self.listaVertices[de].agregarVecino(self.listaVertices[a], costo)
 
     def obtenerVertices(self):
         return self.listaVertices.keys()
     
-    def dijkstra(unGrafo,inicio):
+    def dijkstra(self,unGrafo,inicio):
         cp = MonticuloBinario2()
         inicio.asignarDistancia(0)
         cp.construirMonticulo([(v.obtenerDistancia(),v) for v in unGrafo])
@@ -68,3 +78,6 @@ class Grafo:
 
     def __iter__(self):
         return iter(self.listaVertices.values())
+    
+    def __contains__(self,n):
+        return n in self.listaVertices

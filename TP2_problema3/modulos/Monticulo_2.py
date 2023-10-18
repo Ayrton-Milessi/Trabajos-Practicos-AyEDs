@@ -60,6 +60,9 @@ class MonticuloBinario2:
       self.tuplaMonticulo[i]= (nuevo_valor, self.tuplaMonticulo[i][1])
       self.infiltAbajo(i)
   
+  def estaVacia(self):
+    return self.tamanoActual == 0
+  
   def __iter__(self):
     for i in range(1, len(self.tuplaMonticulo)):
       yield self.tuplaMonticulo[i]

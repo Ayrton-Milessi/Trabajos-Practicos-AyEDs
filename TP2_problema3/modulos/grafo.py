@@ -1,4 +1,5 @@
-from TP2_problema3.Modulos.Monticulo_2 import MonticuloBinario2
+from TP2_problema3.modulos.Monticulo_2 import MonticuloBinario2
+from TP2_problema3.modulos.cola import Cola
 
 class Vertice:
     def __init__(self,clave):
@@ -6,6 +7,7 @@ class Vertice:
         self.conectadoA = {}
         self.dist= float("inf")
         self.predecesor= None
+        self.color= "white"
 
     def agregarVecino(self,vecino,ponderacion=0):
         self.conectadoA[vecino] = ponderacion
@@ -31,9 +33,14 @@ class Vertice:
     def obtenerPredecesor(self):
         return self.predecesor
     
+    def asignarColor(self, color):
+        self.color= color
+    
+    def obtenerColor(self):
+        return self.color
+    
     def __str__(self):
         return str(self.id) + ' conectadoA: ' + str([x.id for x in self.conectadoA])
-
 
 class Grafo:
     def __init__(self):
@@ -63,16 +70,16 @@ class Grafo:
         return self.listaVertices.keys()
     
     def dijkstra(self,unGrafo,inicio):
-        cp = MonticuloBinario2()
+        cp = MonticuloBinario2() #monticulo de maximo
         inicio.asignarDistancia(0)
         cp.construirMonticulo([(v.obtenerDistancia(),v) for v in unGrafo])
         while not cp.estaVacia():
             verticeActual = cp.eliminarMin()
-            for verticeSiguiente in verticeActual.obtenerConexiones():
-                nuevaDistancia = verticeActual.obtenerDistancia() + verticeActual.obtenerPonderacion(verticeSiguiente)
-                if nuevaDistancia < verticeSiguiente.obtenerDistancia():
-                    verticeSiguiente.asignarDistancia( nuevaDistancia )
-                    verticeSiguiente.asignarPredecesor(verticeActual)
+            for verticeSiguiente in verticeActual[1].obtenerConexiones():
+                nuevaDistancia = verticeActual[1].obtenerDistancia() + verticeActual[1].obtenerPonderacion(verticeSiguiente)
+                if nuevaDistancia < verticeSiguiente.obtenerDistancia(): #relajación
+                    verticeSiguiente.asignarDistancia(nuevaDistancia)
+                    verticeSiguiente.asignarPredecesor(verticeActual[1])
                     cp.decrementarClave(verticeSiguiente,nuevaDistancia)
 
     def caminoCorto(self, inicio, fin):
@@ -89,7 +96,19 @@ class Grafo:
         return [camino, distanciaCamino]
 
     def cuelloBotella(self, inicio):
-        pass
+        inicio.asignarDistancia(0)
+        inicio.asignarPredecesor(None)
+        colaVertices = Cola()
+        colaVertices.agregar(inicio)
+        while (colaVertices.tamano() > 0):
+            verticeActual = colaVertices.avanzar()
+            for vecino in verticeActual.obtenerConexiones():
+                    if (vecino.obtenerColor() == 'blanco'):
+                        vecino.asignarColor('gris')
+                        vecino.asignarDistancia(verticeActual.obtenerDistancia() + 1)
+                        vecino.asignarPredecesor(verticeActual)
+                        colaVertices.agregar(vecino)
+            verticeActual.asignarColor('negro')
     
     def __iter__(self):
         return iter(self.listaVertices.values())

@@ -19,7 +19,7 @@ class MonticuloBinario2:
   def infiltAbajo(self, i):
     while (i * 2) <= self.tamanoActual:
       hm= self.hijoMin(i)
-      if self.tamanoActual[i][0] > self.tuplaMonticulo[hm][0]:
+      if self.tuplaMonticulo[i][0] > self.tuplaMonticulo[hm][0]:
         temporal= self.tuplaMonticulo[i]
         self.tuplaMonticulo[i]= self.tuplaMonticulo[hm]
         self.tuplaMonticulo[hm]= temporal
@@ -38,7 +38,7 @@ class MonticuloBinario2:
     valorSacado= self.tuplaMonticulo[1]
     self.tuplaMonticulo[1]= self.tuplaMonticulo[self.tamanoActual]
     self.tamanoActual= self.tamanoActual-1
-    self.tamanoActual.pop()
+    self.tuplaMonticulo.pop()
     self.infiltAbajo(1)
     return valorSacado
   
@@ -51,7 +51,7 @@ class MonticuloBinario2:
       i -=1
 
   def decrementarClave(self, i, nuevo_valor):
-    if i < 1 or i > self.tamanoActual: #maneja si esta fuera del rango
+    if i not in self.tuplaMonticulo: #maneja si esta fuera del rango
       return
     if nuevo_valor < self.tuplaMonticulo[i][0]:
       self.tuplaMonticulo[i]= (nuevo_valor, self.tuplaMonticulo[i][1])

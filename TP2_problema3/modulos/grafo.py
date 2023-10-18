@@ -79,10 +79,12 @@ class Grafo:
         self.dijkstra(self, self.obtenerVertice(inicio)) #usa dijkstra para buscar el vecino más cercano del vertice 'inicio'
         verticeActual= self.obtenerVertice(fin)
         camino=[]
+        distanciaCamino= 0
         while verticeActual is not None:
             camino.insert(0, verticeActual.obtenerId()) #inserta el vertice 'inicio' y va agregando los vertices (camino) hasta llegar a 'fin'
+            distanciaCamino += verticeActual.obtenerDistancia() #va sumando la distancia del camino
             verticeActual= verticeActual.obtenerPredecesor() #desde el vertice 'fin' vamos retrociendo buscando el camino más corto
-        return camino
+        return [camino, distanciaCamino]
 
     def __iter__(self):
         return iter(self.listaVertices.values())

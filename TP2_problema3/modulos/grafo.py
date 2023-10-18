@@ -88,6 +88,9 @@ class Grafo:
             return None #no encontro ningun camino para el lugar de inicio hasta el destino
         return [camino, distanciaCamino]
 
+    def cuelloBotella(self, inicio):
+        pass
+    
     def __iter__(self):
         return iter(self.listaVertices.values())
     

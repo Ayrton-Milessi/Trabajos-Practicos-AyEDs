@@ -1,5 +1,5 @@
-from TP2_problema3.modulos.Monticulo_2 import MonticuloBinario2
-from TP2_problema3.modulos.cola import Cola
+from TP2_problema3.Modulos.Monticulo_2 import MonticuloBinario2
+from TP2_problema3.Modulos.cola import Cola
 
 class Vertice:
     def __init__(self,clave):
@@ -9,8 +9,8 @@ class Vertice:
         self.predecesor= None
         self.color= "white"
 
-    def agregarVecino(self,vecino,ponderacion=0):
-        self.conectadoA[vecino] = ponderacion
+    def agregarVecino(self,vecino, peso, costo):
+        self.conectadoA[vecino] = (peso, costo)
 
     def obtenerConexiones(self):
         return self.conectadoA.keys()
@@ -19,7 +19,8 @@ class Vertice:
         return self.id
 
     def obtenerPonderacion(self,vecino):
-        return self.conectadoA[vecino]
+        peso, costo= self.conectadoA[vecino]
+        return peso, costo
 
     def asignarDistancia(self, distancia):
         self.dist= distancia
@@ -48,7 +49,7 @@ class Grafo:
         self.numVertices = 0
 
     def agregarVertice(self,clave):
-        self.numVertices = self.numVertices + 1
+        self.numVertices += 1
         nuevoVertice = Vertice(clave)
         self.listaVertices[clave] = nuevoVertice
         return nuevoVertice
@@ -59,15 +60,16 @@ class Grafo:
         else:
             return None
 
-    def agregarArista(self,de,a,costo=0):
+    def obtenerVertices(self):
+        return self.listaVertices.keys()
+    
+    def agregarArista(self,de,a, peso,costo=0):
         if de not in self.listaVertices:
             self.agregarVertice(de)
         if a not in self.listaVertices:
             self.agregarVertice(a)
-        self.listaVertices[de].agregarVecino(self.listaVertices[a], costo)
-
-    def obtenerVertices(self):
-        return self.listaVertices.keys()
+        self.listaVertices[de].agregarVecino(self.listaVertices[a], peso, costo)
+        self.listaVertices[a].agregarVecino(self.listaVertices[de], peso, costo) #añade la arista en ambas direcciones si es bidireccional.
     
     def dijkstra(self,unGrafo,inicio):
         cp = MonticuloBinario2() #monticulo de maximo
@@ -76,40 +78,18 @@ class Grafo:
         while not cp.estaVacia():
             verticeActual = cp.eliminarMin()
             for verticeSiguiente in verticeActual[1].obtenerConexiones():
-                nuevaDistancia = verticeActual[1].obtenerDistancia() + verticeActual[1].obtenerPonderacion(verticeSiguiente)
+                nuevaDistancia = verticeActual[1].obtenerDistancia() + verticeActual[1].obtenerPonderacion(verticeSiguiente)[0]
                 if nuevaDistancia < verticeSiguiente.obtenerDistancia(): #relajación
                     verticeSiguiente.asignarDistancia(nuevaDistancia)
                     verticeSiguiente.asignarPredecesor(verticeActual[1])
                     cp.decrementarClave(verticeSiguiente,nuevaDistancia)
 
-    def caminoCorto(self, inicio, fin):
-        self.dijkstra(self, self.obtenerVertice(inicio)) #usa dijkstra para buscar el vecino más cercano del vertice 'inicio'
-        verticeActual= self.obtenerVertice(fin)
-        camino=[]
-        distanciaCamino= 0
-        while verticeActual is not None:
-            camino.insert(0, verticeActual.obtenerId()) #inserta el vertice 'inicio' y va agregando los vertices (camino) hasta llegar a 'fin'
-            distanciaCamino += verticeActual.obtenerDistancia() #va sumando la distancia del camino
-            verticeActual= verticeActual.obtenerPredecesor() #desde el vertice 'fin' vamos retrociendo buscando el camino más corto
-        if distanciaCamino == 0:
-            return None #no encontro ningun camino para el lugar de inicio hasta el destino
-        return [camino, distanciaCamino]
+    def obtener_max_cuello_botella(self, inicio, destino):
+        pass
 
-    def cuelloBotella(self, inicio):
-        inicio.asignarDistancia(0)
-        inicio.asignarPredecesor(None)
-        colaVertices = Cola()
-        colaVertices.agregar(inicio)
-        while (colaVertices.tamano() > 0):
-            verticeActual = colaVertices.avanzar()
-            for vecino in verticeActual.obtenerConexiones():
-                    if (vecino.obtenerColor() == 'blanco'):
-                        vecino.asignarColor('gris')
-                        vecino.asignarDistancia(verticeActual.obtenerDistancia() + 1)
-                        vecino.asignarPredecesor(verticeActual)
-                        colaVertices.agregar(vecino)
-            verticeActual.asignarColor('negro')
-    
+    def obtener_precio_minimo(self, origen, destino):
+        pass
+
     def __iter__(self):
         return iter(self.listaVertices.values())
     

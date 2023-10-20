@@ -1,5 +1,5 @@
-from TP2_problema3.Modulos.Monticulo_2 import MonticuloBinario2
-from TP2_problema3.Modulos.cola import Cola
+from TP2_problema3.modulos.Monticulo_2 import MonticuloBinario2
+from TP2_problema3.modulos.cola import Cola
 
 class Vertice:
     def __init__(self,clave):
@@ -69,7 +69,7 @@ class Grafo:
         if a not in self.listaVertices:
             self.agregarVertice(a)
         self.listaVertices[de].agregarVecino(self.listaVertices[a], peso, costo)
-        self.listaVertices[a].agregarVecino(self.listaVertices[de], peso, costo) #añade la arista en ambas direcciones si es bidireccional.
+
     
     def dijkstra(self,unGrafo,inicio):
         cp = MonticuloBinario2() #monticulo de maximo

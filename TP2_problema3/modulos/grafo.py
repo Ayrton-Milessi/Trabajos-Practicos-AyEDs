@@ -63,7 +63,7 @@ class Grafo:
     def obtenerVertices(self):
         return self.listaVertices.keys()
     
-    def agregarArista(self,de,a, peso,costo=0):
+    def agregarArista(self, de , a, peso, costo=0):
         if de not in self.listaVertices:
             self.agregarVertice(de)
         if a not in self.listaVertices:
@@ -71,24 +71,33 @@ class Grafo:
         self.listaVertices[de].agregarVecino(self.listaVertices[a], peso, costo)
 
     
-    def dijkstra(self,unGrafo,inicio):
-        cp = MonticuloBinario2() #monticulo de maximo
+    def dijkstra(self, unGrafo, inicio_usuario, destino_usuario):
+        inicio=unGrafo.obtenerVertice(inicio_usuario) #elegimos la ciudad de origen
+        destino= unGrafo.obtenerVertice(destino_usuario)
+        cp = MonticuloBinario2()  # montículo de máximo
         inicio.asignarDistancia(0)
-        cp.construirMonticulo([(v.obtenerDistancia(),v) for v in unGrafo])
+        cp.construirMonticulo([(v.obtenerDistancia(), v) for v in unGrafo])
+
         while not cp.estaVacia():
             verticeActual = cp.eliminarMin()
+
+            if verticeActual[1] == destino: #Si el vertice actual es el que buscamos, cortamos aca
+                return destino.obtenerDistancia()
+
             for verticeSiguiente in verticeActual[1].obtenerConexiones():
-                nuevaDistancia = verticeActual[1].obtenerDistancia() + verticeActual[1].obtenerPonderacion(verticeSiguiente)[0]
-                if nuevaDistancia < verticeSiguiente.obtenerDistancia(): #relajación
+                costo_arista= verticeActual[1].obtenerPonderacion(verticeSiguiente)[1]  #aca obtenemos el costo
+                nuevaDistancia = verticeActual[1].obtenerDistancia() + costo_arista
+                if nuevaDistancia < verticeSiguiente.obtenerDistancia():  #relajación
                     verticeSiguiente.asignarDistancia(nuevaDistancia)
                     verticeSiguiente.asignarPredecesor(verticeActual[1])
-                    cp.decrementarClave(verticeSiguiente,nuevaDistancia)
+                    cp.decrementarClave(verticeSiguiente, nuevaDistancia)
 
-    def obtener_max_cuello_botella(self, inicio, destino):
+
+    def obtener_max_cuello_botella(self, unGrafo, origen, destino):
         pass
 
-    def obtener_precio_minimo(self, origen, destino):
-        pass
+    def obtener_precio_minimo(self, unGrafo, origen, destino):
+        return self.dijkstra(unGrafo, origen, destino)
 
     def __iter__(self):
         return iter(self.listaVertices.values())

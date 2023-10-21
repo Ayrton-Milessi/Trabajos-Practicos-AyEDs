@@ -1,68 +1,56 @@
 class MonticuloBinario:
-    def __init__ (self):
-        self.lista_pacientes= [0]
-        self.tamanio= 0
+    def __init__(self):
+        self.listaMonticulo = [0]
+        self.tamanoActual = 0
 
-    def infiltrar_arriba (self, orden):
-        while orden // 2 > 0:
-            if self.lista_pacientes[orden] < self.lista_pacientes [orden // 2]:
-                aux= self.lista_pacientes[orden // 2]
-                self.lista_pacientes[orden // 2]= self.lista_pacientes[orden]
-                self.lista_pacientes[orden]= aux
-            orden= orden // 2
 
-    def insertar (self, paciente):
-        self.lista_pacientes.append(paciente)
-        self.tamanio+= 1
-        self.infiltrar_arriba(self.tamanio)
+    def infiltArriba(self,i):
+        while i // 2 > 0:
+          if self.listaMonticulo[i] < self.listaMonticulo[i // 2]:
+             tmp = self.listaMonticulo[i // 2]
+             self.listaMonticulo[i // 2] = self.listaMonticulo[i]
+             self.listaMonticulo[i] = tmp
+          i = i // 2
 
-    def infiltrar_abajo(self,i):
-        while (i * 2) <= self.tamanio:
-           hijo_minimo= self.hijoMin(i)
-           if self.lista_pacientes[i] > self.lista_pacientes[hijo_minimo]:
-              temporal= self.lista_pacientes[i]
-              self.lista_pacientes[i]= self.lista_pacientes[hijo_minimo]
-              self.lista_pacientes[hijo_minimo]= temporal
-           i = hijo_minimo
+    def insertar(self,k):
+      self.listaMonticulo.append(k)
+      self.tamanoActual = self.tamanoActual + 1
+      self.infiltArriba(self.tamanoActual)
+
+    def infiltAbajo(self,i):
+      while (i * 2) <= self.tamanoActual:
+          hm = self.hijoMin(i)
+          if self.listaMonticulo[i] > self.listaMonticulo[hm]:
+              tmp = self.listaMonticulo[i]
+              self.listaMonticulo[i] = self.listaMonticulo[hm]
+              self.listaMonticulo[hm] = tmp
+          i = hm
 
     def hijoMin(self,i):
-        if i * 2 + 1 > self.tamanio:
-           return i * 2
-        else:
-           if self.lista_pacientes[i*2] < self.lista_pacientes[i*2+1]:
+      if i * 2 + 1 > self.tamanoActual:
+          return i * 2
+      else:
+          if self.listaMonticulo[i*2] < self.listaMonticulo[i*2+1]:
               return i * 2
-           else:
+          else:
               return i * 2 + 1
 
     def eliminarMin(self):
-        valor_sacado= self.lista_pacientes[1]
-        self.lista_pacientes[1]= self.lista_pacientes[self.tamanio]
-        self.tamanio= self.tamanio - 1
-        self.lista_pacientes.pop()
-        self.infiltrar_abajo(1)
-        return valor_sacado
-    
-    def construir_monticulo(self,lista):
-        i= len(lista) // 2
-        self.tamanio= len(lista)
-        self.lista_pacientes= [0] + lista[:]
-        while (i > 0):
-            self.infiltrar_abajo(i)
-            i-= 1
+      valorSacado = self.listaMonticulo[1]
+      self.listaMonticulo[1] = self.listaMonticulo[self.tamanoActual]
+      self.tamanoActual = self.tamanoActual - 1
+      self.listaMonticulo.pop()
+      self.infiltAbajo(1)
+      return valorSacado
 
-    def decrementarClave(self, i, nuevo_valor):
-        if i not in self.tuplaMonticulo:
-            return
-        if nuevo_valor < self.tuplaMonticulo[i][0]:
-            self.tuplaMonticulo[i] = (nuevo_valor, self.tuplaMonticulo[i][1])
-            self.infiltArriba(i)
-        elif nuevo_valor > self.tuplaMonticulo[i][0]:  
-            self.tuplaMonticulo[i] = (nuevo_valor, self.tuplaMonticulo[i][1])
-            self.infiltAbajo(i)
+    def construirMonticulo(self,unaLista):
+      i = len(unaLista) // 2
+      self.tamanoActual = len(unaLista)
+      self.listaMonticulo = [0] + unaLista[:]
+      while (i > 0):
+          self.infiltAbajo(i)
+          i = i - 1
 
-    def estaVacia(self):
-        return self.tamanoActual == 0
-    
     def __iter__(self):
-        for i in range(1,len(self.lista_pacientes)):
-            yield self.lista_pacientes[i]        
+        for i in range(1,len(self.listaMonticulo)):
+            yield self.listaMonticulo[i]        

@@ -50,15 +50,12 @@ class MonticuloBinarioMaximo:
             self.infiltAbajo(i)
             i -= 1
 
-    def decrementarClave(self, i, nuevo_valor):
-        if i not in self.tuplaMonticulo:  # maneja si está fuera del rango
-            return
-        if nuevo_valor > self.tuplaMonticulo[i][0]:  #cambiamos la comparación a '>'
-            self.tuplaMonticulo[i] = (nuevo_valor, self.tuplaMonticulo[i][1])
-            self.infiltArriba(i)
-        elif nuevo_valor < self.tuplaMonticulo[i][0]:  #cambiamos la comparación a '>'
-            self.tuplaMonticulo[i] = (nuevo_valor, self.tuplaMonticulo[i][1])
-            self.infiltAbajo(i)
+    def incrementarClave(self, vertice, nuevo_valor):
+        for i in range(1, len(self.tuplaMonticulo)):
+            if self.tuplaMonticulo[i][0] == vertice:  # Comparamos el primer elemento de la tupla (peso)
+                self.tuplaMonticulo[i] = (nuevo_valor, vertice)
+                self.infiltArriba(i)
+                break
 
     def estaVacia(self):
         return self.tamanoActual == 0

@@ -5,10 +5,10 @@ class MonticuloBinario_Tupla_Minimo:
 
   def infiltArriba(self, indice_elemento):
     while indice_elemento // 2 > 0: #mientras el elemento tenga un padre:
-      if self.tuplaMonticulo[indice_elemento][0] < self.tuplaMonticulo[indice_elemento // 2]: #si el elemento es menor que el padre:
+      if self.tuplaMonticulo[indice_elemento][0] < self.tuplaMonticulo[indice_elemento // 2][0]: #si el elemento es menor que el padre:
         temporal= self.tuplaMonticulo[indice_elemento // 2] #guardamos el padre en una variable temporal
         self.tuplaMonticulo[indice_elemento // 2]= self.tuplaMonticulo[indice_elemento] #reemplazamos al padre con el elemento
-        self.tuplaMonticulo= temporal # Reemplaza al elemento con el padre
+        self.tuplaMonticulo[indice_elemento]= temporal # Reemplaza al elemento con el padre
       indice_elemento= indice_elemento // 2 #actualiza el indice al del padre
 
   def insertar(self, dato):
@@ -50,16 +50,13 @@ class MonticuloBinario_Tupla_Minimo:
       self.infiltAbajo(i)
       i -=1
 
-  def decrementarClave(self, i, nuevo_valor):
-    if i not in self.tuplaMonticulo: #maneja si esta fuera del rango
-      return
-    if nuevo_valor < self.tuplaMonticulo[i][0]:
-      self.tuplaMonticulo[i]= (nuevo_valor, self.tuplaMonticulo[i][1])
-      self.infiltArriba(i)
-    elif nuevo_valor > self.tuplaMonticulo[i][0]:
-      self.tuplaMonticulo[i]= (nuevo_valor, self.tuplaMonticulo[i][1])
-      self.infiltAbajo(i)
-  
+  def decrementarClave(self, vertice, nueva_clave):
+    for i in range(1, len(self.tuplaMonticulo)):
+      if self.tuplaMonticulo[i][1] == vertice:
+        self.tuplaMonticulo[i] = (nueva_clave, vertice)
+        self.infiltArriba(i)
+        break
+
   def estaVacia(self):
     return self.tamanoActual == 0
   

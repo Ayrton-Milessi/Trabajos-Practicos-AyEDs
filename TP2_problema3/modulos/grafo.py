@@ -91,6 +91,7 @@ class Grafo:
 
     def obtenerCamino(self, vertice): #Esta funcion nos sirve para retornar el camino y el precio que tomo el algoritmo de "dijkstra_precio"
         actual = vertice
+        camino = []  # Inicializar camino
         while actual is not None:
             camino.append(actual.id)
             if actual.predecesor is not None:# Si el vertice tiene un predecesor:

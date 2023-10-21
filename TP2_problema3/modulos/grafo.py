@@ -9,7 +9,7 @@ class Vertice:
         self.dist= float("inf")
         self.predecesor= None
 
-    def agregarVecino(self,vecino, peso, costo):
+    def agregarVecino(self,vecino, peso, costo): # Agrega un vertice vecino con su respectivo peso y costo.
         self.conectadoA[vecino] = (peso, costo)
 
     def obtenerConexiones(self):
@@ -18,7 +18,7 @@ class Vertice:
     def obtenerId(self):
         return self.id
     
-    def obtenerPonderacion(self,vecino):
+    def obtenerPonderacion(self, vecino):
         peso, costo= self.conectadoA[vecino]
         return peso, costo
     
@@ -44,27 +44,27 @@ class Grafo:
 
     def agregarVertice(self,clave):
         self.numVertices += 1
-        nuevoVertice = Vertice(clave)
-        self.listaVertices[clave] = nuevoVertice
+        nuevoVertice = Vertice(clave) # Crea un nuevo objeto de vertice con la clave dada
+        self.listaVertices[clave] = nuevoVertice #agregamos el vertice al diccionario.
         return nuevoVertice
 
     def obtenerVertice(self,n):
-        if n in self.listaVertices:
-            return self.listaVertices[n]
+        if n in self.listaVertices: 
+            return self.listaVertices[n] # Devuelve el vertice con la clave n si existe.
         else:
             return None
 
     def obtenerVertices(self):
-        return self.listaVertices.keys()
+        return self.listaVertices.keys() #Devuelve las claves de todos los vertices en el grafo.
 
     def agregarArista(self, de , a, peso, costo=0):
+        #La seccion de los if comprueba si existe el vertice "A" y "B" en el diccionario, si no existen los agrega
         if de not in self.listaVertices:
             self.agregarVertice(de)
         if a not in self.listaVertices:
             self.agregarVertice(a)
-        self.listaVertices[de].agregarVecino(self.listaVertices[a], peso, costo)
-
-    
+        
+        self.listaVertices[de].agregarVecino(self.listaVertices[a], peso, costo) #Con esta linea agregamos la arista con su peso y costo.
 
 
     def dijkstra_precio(self, unGrafo, inicio_usuario, destino_usuario):
@@ -74,8 +74,8 @@ class Grafo:
         inicio.asignarDistancia(0)
         cp.construirMonticulo([(v.obtenerDistancia(), v) for v in unGrafo])
 
-        while not cp.estaVacia():
-            verticeActual = cp.eliminarMin()
+        while not cp.estaVacia(): #Mientras que el monticulo no este vacio:
+            verticeActual = cp.eliminarMin() #eliminamos el minimo y lo guardamos en la variable "verticeActual"
 
             if verticeActual[1] == destino: #Si el vertice actual es el que buscamos, cortamos aca
                 return destino.obtenerDistancia(), self.obtenerCamino(destino)
@@ -88,18 +88,20 @@ class Grafo:
                     verticeSiguiente.asignarPredecesor((verticeActual[1], costo_arista))  # Almacenamos el predecesor y el costo de la arista desde ese predecesor
                     cp.decrementarClave(verticeSiguiente, nuevaDistancia)
 
-    def obtenerCamino(self, vertice):
-        camino = []
+
+    def obtenerCamino(self, vertice): #Esta funcion nos sirve para retornar el camino y el precio que tomo el algoritmo de "dijkstra_precio"
         actual = vertice
         while actual is not None:
             camino.append(actual.id)
-            if actual.predecesor is not None:  # Si el vértice tiene un predecesor...
-                camino.append(actual.predecesor[1])  # ...agregamos el costo de la arista desde ese predecesor
-            actual = actual.predecesor[0] if actual.predecesor is not None else None  # Actualizamos 'actual' al predecesor
+            if actual.predecesor is not None:# Si el vertice tiene un predecesor:
+                camino.append(actual.predecesor[1])  #agregamos el costo de la arista
+            if actual.predecesor is not None: # Actualizamos "actual" al predecesor
+                actual = actual.predecesor[0]
+            else:
+                actual = None
         camino = camino[::-1]  # Invertimos la lista para que el camino vaya desde el inicio hasta el destino
         return camino
 
-    
     def dijkstra_peso(self, unGrafo, inicio_usuario, destino_usuario):
         pass
 

@@ -50,6 +50,19 @@ class MonticuloBinario:
             self.infiltrar_abajo(i)
             i-= 1
 
+    def decrementarClave(self, i, nuevo_valor):
+        if i not in self.tuplaMonticulo:
+            return
+        if nuevo_valor < self.tuplaMonticulo[i][0]:
+            self.tuplaMonticulo[i] = (nuevo_valor, self.tuplaMonticulo[i][1])
+            self.infiltArriba(i)
+        elif nuevo_valor > self.tuplaMonticulo[i][0]:  
+            self.tuplaMonticulo[i] = (nuevo_valor, self.tuplaMonticulo[i][1])
+            self.infiltAbajo(i)
+
+    def estaVacia(self):
+        return self.tamanoActual == 0
+    
     def __iter__(self):
         for i in range(1,len(self.lista_pacientes)):
             yield self.lista_pacientes[i]        

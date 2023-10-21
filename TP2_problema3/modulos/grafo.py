@@ -1,4 +1,5 @@
 from TP2_problema3.Modulos.Monticulo_2 import MonticuloBinarioMaximo
+from TP2_problema1.modulos.monticulo import MonticuloBinario as MonticuloBinarioMinimo
 
 class Vertice:
     def __init__(self,clave):
@@ -12,14 +13,14 @@ class Vertice:
 
     def obtenerConexiones(self):
         return self.conectadoA.keys()
-
+    
     def obtenerId(self):
         return self.id
-
+    
     def obtenerPonderacion(self,vecino):
         peso, costo= self.conectadoA[vecino]
         return peso, costo
-
+    
     def asignarDistancia(self, distancia):
         self.dist= distancia
     
@@ -32,15 +33,9 @@ class Vertice:
     def obtenerPredecesor(self):
         return self.predecesor
     
-    def asignarColor(self, color):
-        self.color= color
-    
-    def obtenerColor(self):
-        return self.color
-    
     def __str__(self):
         return str(self.id) + ' conectadoA: ' + str([x.id for x in self.conectadoA])
-
+    
 class Grafo:
     def __init__(self):
         self.listaVertices = {}
@@ -60,7 +55,7 @@ class Grafo:
 
     def obtenerVertices(self):
         return self.listaVertices.keys()
-    
+
     def agregarArista(self, de , a, peso, costo=0):
         if de not in self.listaVertices:
             self.agregarVertice(de)
@@ -68,11 +63,10 @@ class Grafo:
             self.agregarVertice(a)
         self.listaVertices[de].agregarVecino(self.listaVertices[a], peso, costo)
 
-    
     def dijkstra(self, unGrafo, inicio_usuario, destino_usuario):
         inicio=unGrafo.obtenerVertice(inicio_usuario) #elegimos la ciudad de origen
         destino= unGrafo.obtenerVertice(destino_usuario)
-        cp = MonticuloBinarioMaximo()  # montículo de máximo
+        cp = MonticuloBinarioMinimo()  # montículo de máximo
         inicio.asignarDistancia(0)
         cp.construirMonticulo([(v.obtenerDistancia(), v) for v in unGrafo])
 
@@ -90,7 +84,6 @@ class Grafo:
                     verticeSiguiente.asignarPredecesor(verticeActual[1])
                     cp.decrementarClave(verticeSiguiente, nuevaDistancia)
 
-
     def obtener_max_cuello_botella(self, unGrafo, origen, destino):
         pass
 
@@ -99,7 +92,7 @@ class Grafo:
 
     def __iter__(self):
         return iter(self.listaVertices.values())
-    
+
     def __contains__(self,n):
         return n in self.listaVertices
     

@@ -33,8 +33,5 @@ for vertice in grafo.obtenerVertices():
     print("\n")
 
 
-inicio= "Rosario" #elegimos la ciudad de origen
-destino= "Rufino" #elegimos la ciudad de destino final
-precio= grafo.obtener_precio_minimo(grafo ,inicio ,destino)
-
-print(f"El precio mas bajo para viajar desde {inicio} a {destino} es de ${int(precio)*1000}")
+inicio= "CiudadBs.As." #elegimos la ciudad de origen
+destino= "CiudadCordoba" #elegimos la ciudad de destino final

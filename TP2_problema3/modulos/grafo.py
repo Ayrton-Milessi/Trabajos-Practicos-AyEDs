@@ -1,5 +1,4 @@
-from TP2_problema3.modulos.Monticulo_2 import MonticuloBinario2
-from TP2_problema3.modulos.cola import Cola
+from TP2_problema3.Modulos.Monticulo_2 import MonticuloBinarioMaximo
 
 class Vertice:
     def __init__(self,clave):
@@ -7,7 +6,6 @@ class Vertice:
         self.conectadoA = {}
         self.dist= float("inf")
         self.predecesor= None
-        self.color= "white"
 
     def agregarVecino(self,vecino, peso, costo):
         self.conectadoA[vecino] = (peso, costo)
@@ -74,7 +72,7 @@ class Grafo:
     def dijkstra(self, unGrafo, inicio_usuario, destino_usuario):
         inicio=unGrafo.obtenerVertice(inicio_usuario) #elegimos la ciudad de origen
         destino= unGrafo.obtenerVertice(destino_usuario)
-        cp = MonticuloBinario2()  # montículo de máximo
+        cp = MonticuloBinarioMaximo()  # montículo de máximo
         inicio.asignarDistancia(0)
         cp.construirMonticulo([(v.obtenerDistancia(), v) for v in unGrafo])
 

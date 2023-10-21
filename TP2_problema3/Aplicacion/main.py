@@ -1,4 +1,4 @@
-from TP2_problema3.modulos.grafo import Grafo
+from TP2_problema3.Modulos.grafo import Grafo
 #import matplotlib.pyplot as plt # Lo usamos para poder poner la ponderacion en el grafico
 #import networkx as nx #Funcion para graficar Grafos.
 

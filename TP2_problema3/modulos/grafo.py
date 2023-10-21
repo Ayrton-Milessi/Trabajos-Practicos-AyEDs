@@ -1,5 +1,6 @@
-from TP2_problema3.Modulos.Monticulo_2 import MonticuloBinarioMaximo
-from TP2_problema1.modulos.monticulo import MonticuloBinario as MonticuloBinarioMinimo
+from TP2_problema3.modulos.Monticulo_1 import MonticuloBinario_Tupla_Minimo
+from TP2_problema3.modulos.Monticulo_2 import MonticuloBinarioMaximo
+
 
 class Vertice:
     def __init__(self,clave):
@@ -63,10 +64,13 @@ class Grafo:
             self.agregarVertice(a)
         self.listaVertices[de].agregarVecino(self.listaVertices[a], peso, costo)
 
-    def dijkstra(self, unGrafo, inicio_usuario, destino_usuario):
-        inicio=unGrafo.obtenerVertice(inicio_usuario) #elegimos la ciudad de origen
+    
+
+
+    def dijkstra_precio(self, unGrafo, inicio_usuario, destino_usuario):
+        inicio= unGrafo.obtenerVertice(inicio_usuario) #elegimos la ciudad de origen
         destino= unGrafo.obtenerVertice(destino_usuario)
-        cp = MonticuloBinarioMinimo()  # montículo de máximo
+        cp = MonticuloBinario_Tupla_Minimo()  # montículo de máximo
         inicio.asignarDistancia(0)
         cp.construirMonticulo([(v.obtenerDistancia(), v) for v in unGrafo])
 
@@ -74,21 +78,36 @@ class Grafo:
             verticeActual = cp.eliminarMin()
 
             if verticeActual[1] == destino: #Si el vertice actual es el que buscamos, cortamos aca
-                return destino.obtenerDistancia()
+                return destino.obtenerDistancia(), self.obtenerCamino(destino)
 
             for verticeSiguiente in verticeActual[1].obtenerConexiones():
                 costo_arista= verticeActual[1].obtenerPonderacion(verticeSiguiente)[1]  #aca obtenemos el costo
                 nuevaDistancia = verticeActual[1].obtenerDistancia() + costo_arista
                 if nuevaDistancia < verticeSiguiente.obtenerDistancia():  #relajación
                     verticeSiguiente.asignarDistancia(nuevaDistancia)
-                    verticeSiguiente.asignarPredecesor(verticeActual[1])
+                    verticeSiguiente.asignarPredecesor((verticeActual[1], costo_arista))  # Almacenamos el predecesor y el costo de la arista desde ese predecesor
                     cp.decrementarClave(verticeSiguiente, nuevaDistancia)
+
+    def obtenerCamino(self, vertice):
+        camino = []
+        actual = vertice
+        while actual is not None:
+            camino.append(actual.id)
+            if actual.predecesor is not None:  # Si el vértice tiene un predecesor...
+                camino.append(actual.predecesor[1])  # ...agregamos el costo de la arista desde ese predecesor
+            actual = actual.predecesor[0] if actual.predecesor is not None else None  # Actualizamos 'actual' al predecesor
+        camino = camino[::-1]  # Invertimos la lista para que el camino vaya desde el inicio hasta el destino
+        return camino
+
+    
+    def dijkstra_peso(self, unGrafo, inicio_usuario, destino_usuario):
+        pass
 
     def obtener_max_cuello_botella(self, unGrafo, origen, destino):
         pass
 
     def obtener_precio_minimo(self, unGrafo, origen, destino):
-        return self.dijkstra(unGrafo, origen, destino)
+        return self.dijkstra_precio(unGrafo, origen, destino)
 
     def __iter__(self):
         return iter(self.listaVertices.values())

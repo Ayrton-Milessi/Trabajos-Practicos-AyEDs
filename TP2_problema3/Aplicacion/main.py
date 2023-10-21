@@ -1,9 +1,8 @@
-from TP2_problema3.Modulos.grafo import Grafo
+from TP2_problema3.modulos.grafo import Grafo
 #import matplotlib.pyplot as plt # Lo usamos para poder poner la ponderacion en el grafico
 #import networkx as nx #Funcion para graficar Grafos.
 
 grafo= Grafo()
-grafo_costo= Grafo()
 
 with open("rutas.txt", "r") as arch:
     archivo= arch.readlines()
@@ -33,5 +32,13 @@ for vertice in grafo.obtenerVertices():
     print("\n")
 
 
-inicio= "CiudadBs.As." #elegimos la ciudad de origen
-destino= "CiudadCordoba" #elegimos la ciudad de destino final
+inicio= "Rosario" #elegimos la ciudad de origen
+destino= "Rufino" #elegimos la ciudad de destino final
+
+
+precio= grafo.obtener_precio_minimo(grafo ,inicio ,destino)
+
+print(f"El precio mas bajo para viajar desde {inicio} a {destino} es de ${int(precio[0])*1000}")
+print("El camino que tomo es:", precio[1])
+print()
+print("Hola Mundo") #imprime un hola mundo

@@ -73,7 +73,7 @@ class TemperaturasDB:
         for x in self.avl:
             if x >= fecha1_objeto and x <= fecha2_objeto:
                 fecha_formateada = x.strftime("%d/%m/%Y") #Hago que la fecha se muestre como dia mes anio, ya que en formato datetime salia un 00:00:00 el cual no aportaba nada
-                print(f"{fecha_formateada}, temperatura: {self.avl.obtener(x)}")
+                print(f"{fecha_formateada}, temperatura: {self.avl.obtener(x)}°C")
 
     def cantidad_muestras(self):
         return self.avl.tamano

@@ -2,7 +2,6 @@ from TP2_problema2.modulos.investigacion import TemperaturasDB
 
 aux= TemperaturasDB()
 
-
 aux.guardar_temperatura(33.2,'01/09/2049')
 aux.guardar_temperatura(34,'02/09/2049')
 aux.guardar_temperatura(20,'03/09/2049')
@@ -10,7 +9,6 @@ aux.guardar_temperatura(12.3,'06/09/2049')
 aux.guardar_temperatura(50,'29/10/2049')
 aux.guardar_temperatura(49.2,'30/10/2049')
 aux.guardar_temperatura(47,'01/11/2049')
-
 
 #Totalmente Funcional
 
@@ -21,7 +19,6 @@ print(f'{aux.min_temp_rango("01/09/2049","01/11/2049")}°C')
 
 print(f'{aux.temp_extermos_rango("02/09/2049","01/11/2049")}°C')
 
-
 aux.devolver_temperaturas("03/09/2049","29/10/2049")
 
 print(f"cantidad de muestras en el AVL: {aux.cantidad_muestras()}")
@@ -29,4 +26,3 @@ print(f"cantidad de muestras en el AVL: {aux.cantidad_muestras()}")
 aux.borrar_temperatura('01/11/2049')
 
 print(f"cantidad de muestras en el AVL: {aux.cantidad_muestras()}") #podemos observar que se eliminó correctamente 
-

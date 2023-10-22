@@ -5,7 +5,6 @@ class TemperaturasDB:
     def __init__(self):
         self.avl= AVL()
 
-
     def guardar_temperatura(self, temp, fecha:str):
         objeto_fecha= datetime.strptime(fecha,"%d/%m/%Y") # especificamos que formato de fecha que queremos y lo convertimos en un objeto
         self.avl.agregar(objeto_fecha,temp)
@@ -58,7 +57,7 @@ class TemperaturasDB:
         
         return min_temp
 
-    def temp_extermos_rango(self, fecha1, fecha2):
+    def temp_extremos_rango(self, fecha1, fecha2):
         return self.min_temp_rango(fecha1, fecha2), self.max_temp_rango(fecha1,fecha2)
 
     def borrar_temperatura(self, fecha):
@@ -73,7 +72,7 @@ class TemperaturasDB:
 
         for x in self.avl:
             if x >= fecha1_objeto and x <= fecha2_objeto:
-                fecha_formateada = x.strftime("%d/%m/%Y") #Hago que la fecha se muestre como dia mes anio, ya que en formato datetime salia un 00:00:00 el cual no aportaba nada
+                fecha_formateada = x.strftime("%d/%m/%Y") #Hago que la fecha se muestre como dia mes año, ya que en formato datetime salia un 00:00:00 el cual no aportaba nada
                 print(f"{fecha_formateada}, temperatura: {self.avl.obtener(x)}")
 
     def cantidad_muestras(self):

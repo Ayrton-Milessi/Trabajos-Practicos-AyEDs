@@ -1,6 +1,6 @@
 class MonticuloBinario_Tupla_Minimo:
   def __init__(self):
-    self.tuplaMonticulo=[0] # Iniciamos el monticulo con un valor infinito, para que cualquier otro valor sea menor
+    self.tuplaMonticulo=[float("inf")] # Iniciamos el monticulo con un valor infinito, para que cualquier otro valor sea menor
     self.tamanoActual= 0
 
   def infiltArriba(self, indice_elemento):

@@ -74,7 +74,7 @@ class Grafo:
 
     def dijkstraCapacidad(self, unGrafo, inicio, destino):
         cp = MonticuloBinario_Tupla_Maximo()
-        camino= []
+        ruta= []
         if inicio in self.listaVertices:
             inicio= self.obtenerVertice(inicio)
             inicio.asignarDistancia(float('inf'))
@@ -92,54 +92,50 @@ class Grafo:
                             destino= self.obtenerVertice(destino)
                             while destino.obtenerPredecesor() is not None:
                                 predecesor = destino.obtenerPredecesor()
-                                ponderacion_primera = predecesor.obtenerCapacidad(destino)
-                                ponderacion_segunda = predecesor.obtenerPrecio(destino)
-                                nuevoGrafo.agregarArista(predecesor.obtenerId(), destino.obtenerId(), ponderacion_primera, ponderacion_segunda)
+                                ponderacion_capacidad = predecesor.obtenerCapacidad(destino)
+                                ponderacion_precio = predecesor.obtenerPrecio(destino)
+                                nuevoGrafo.agregarArista(predecesor.obtenerId(), destino.obtenerId(), ponderacion_capacidad, ponderacion_precio)
                                 destino = predecesor
-                            camino.append(nuevoGrafo)
-        return camino
+                            ruta.append(nuevoGrafo)
+        return ruta
     
     def dijkstraPrecio(self, unGrafo, inicio):
         for v in self.listaVertices.values():
              v.asignarDistancia(float('inf'))
-        cp = MonticuloBinario_Tupla_Minimo()
+        cp= MonticuloBinario_Tupla_Minimo()
         if inicio in self.listaVertices:
-            inicio = self.obtenerVertice(inicio)
+            inicio= self.obtenerVertice(inicio)
             inicio.asignarDistancia(0)
             cp.construirMonticulo([(v.obtenerDistancia(),v) for v in unGrafo])
             while not cp.estaVacia():
-                verticeActual = cp.eliminarMin()
+                verticeActual= cp.eliminarMin()
                 for verticeSiguiente in verticeActual[1].obtenerConexiones():
-                    nuevaDistancia = verticeActual[1].obtenerDistancia() + verticeActual[1].obtenerPrecio(verticeSiguiente)
+                    nuevaDistancia= verticeActual[1].obtenerDistancia() + verticeActual[1].obtenerPrecio(verticeSiguiente)
                     if nuevaDistancia < verticeSiguiente.obtenerDistancia():
                         verticeSiguiente.asignarDistancia( nuevaDistancia )
                         verticeSiguiente.asignarPredecesor(verticeActual[1])
                         cp.decrementarClave(verticeSiguiente,nuevaDistancia)
 
-    def camino(self, unGrafo, salida, destino):
-        if salida in unGrafo.listaVertices and destino in unGrafo.listaVertices:
-            grafo_peso = self.dijkstraCapacidad(unGrafo, salida, destino)
-            distancias = []
+    def caminoCorto(self, unGrafo, inicio, destino):
+        if inicio in unGrafo.listaVertices and destino in unGrafo.listaVertices:
+            grafo_peso= self.dijkstraCapacidad(unGrafo, inicio, destino)
+            camino= []
         else:
             raise RuntimeError("Verifique la ciudad de inicio o de destino")
         if grafo_peso:
             for grafo in grafo_peso:
-                grafo.dijkstraPrecio(grafo, salida)
-                distancia_precio = grafo.obtenerVertice(destino).obtenerDistancia()
-                distancias.append([grafo, distancia_precio])
-
-            grafo_distancia = min(distancias, key=lambda x: x[1])
-
-            distancia_precio = grafo_distancia[1]
-            distancia_peso = self.listaVertices[destino].obtenerDistancia()
-
-            caminos = []
-            actual = self.obtenerVertice(destino)
+                grafo.dijkstraPrecio(grafo, inicio)
+                ponderacion_precio= grafo.obtenerVertice(destino).obtenerDistancia()
+                camino.append([grafo, ponderacion_precio])
+            grafo_dist= min(camino, key=lambda x: x[1])
+            ponderacion_precio= grafo_dist[1]
+            ponderacion_capacidad= self.listaVertices[destino].obtenerDistancia()
+            caminos= []
+            actual= self.obtenerVertice(destino)
             while actual is not None:
                 caminos.insert(0, actual)
-                actual = actual.obtenerPredecesor()
-
-            return caminos, distancia_peso, distancia_precio
+                actual= actual.obtenerPredecesor()
+            return caminos, ponderacion_capacidad, ponderacion_precio
         else:
             raise RuntimeError("No existe camino a ese destino")
     

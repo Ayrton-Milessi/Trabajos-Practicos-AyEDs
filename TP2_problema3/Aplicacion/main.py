@@ -1,9 +1,8 @@
 from TP2_problema3.Modulos.grafo import Grafo
-#import matplotlib.pyplot as plt # Lo usamos para poder poner la ponderacion en el grafico
-#import networkx as nx #Funcion para graficar Grafos.
+import matplotlib.pyplot as plt # Lo usamos para poder poner la ponderacion en el grafico
+import networkx as nx #Funcion para graficar Grafos.
 
 grafo= Grafo()
-
 with open("rutas.txt", "r") as arch:
     archivo= arch.readlines()
     for x in archivo:
@@ -18,21 +17,48 @@ with open("rutas.txt", "r") as arch:
             grafo.agregarVertice(nombre2)
         grafo.agregarArista(nombre1, nombre2, peso_max, costo)
 
-#Este fragemento sirve para imprimir el grafo en consola
-"""for vertice in grafo.obtenerVertices():
+G= nx.DiGraph() #crear un nuevo grafo de NetworkX
+for vertice in grafo.obtenerVertices(): #copia los nodos y aristas del grafo a G
+    G.add_node(vertice)
+for vertice in grafo.obtenerVertices():
+    for vecino in grafo.listaVertices[vertice].obtenerConexiones():
+        capacidad, precio = grafo.listaVertices[vertice].obtenerCapacidad(vecino), grafo.listaVertices[vertice].obtenerPrecio(vecino)
+        G.add_edge(vertice, vecino.obtenerId(), capacidad=capacidad, precio=precio)
+
+pos = nx.spring_layout(G, k=0.5) #crea un diseño para el gráfico
+
+node_size = 100 #tamaño de vertices
+nx.draw_networkx_nodes(G, pos, node_size=node_size, node_color="lightblue") #representar los vertices
+nx.draw_networkx_edges(G, pos, arrows=True, edge_color="black", width=1.0) #representar las aristas
+
+#etiquetar los vertices con sus id's
+labels = {nodo: nodo for nodo in G.nodes()}
+font_size = 7
+nx.draw_networkx_labels(G, pos, labels, font_size=font_size, verticalalignment="bottom")
+
+#etiquetar las aristas con los atributos (Capacidad y Precio)
+edge_labels = {(nodo_inicio, nodo_fin): (atributos["capacidad"], atributos["precio"]) for nodo_inicio, nodo_fin, atributos in G.edges(data=True)}
+edge_font_size = 5
+nx.draw_networkx_edge_labels(G, pos, edge_labels=edge_labels, font_size=edge_font_size, label_pos=0.3)
+
+plt.figure(figsize=(12, 8)) #tamaño total del gráfico
+plt.axis('off') #muestra el gráfico
+plt.show()
+
+#este fragemento sirve para imprimir el grafo en consola
+for vertice in grafo.obtenerVertices():
     print(f"Vertice: {vertice}")
     for vecino in grafo.listaVertices[vertice].obtenerConexiones():
-        capacidad, costo = grafo.listaVertices[vertice].obtenerPonderacion(vecino)
+        capacidad, costo = grafo.listaVertices[vertice].obtenerCapacidad(vecino),grafo.listaVertices[vertice].obtenerPrecio(vecino)
         print(f"Camino hacia {vecino.obtenerId()} - Peso máximo: {capacidad} - Precio: {costo}")
-    print("\n")"""
+    print("\n")
 
-# Calcular el camino más corto usando Dijkstra
 inicio = "CiudadBs.As."
 destino = "S.delEstero"
-caminos, distancia_peso, distancia_precio= grafo.camino(grafo, inicio, destino)
-# Imprimir el camino y las distancias
-print("Camino más corto:")
-for vertice in caminos:
-    print(vertice.obtenerId())
-print(f"Distancia en peso: {distancia_peso}Kg")
-print(f"Distancia en precio: ${int(distancia_precio)*1000}")
+caminos, distancia_peso, distancia_precio= grafo.caminoCorto(grafo, inicio, destino)
+
+print(f"Ruta con mayor capacidad para transportar y menor costo para ir desde {inicio} hasta {destino} es:")
+for i, v in enumerate (caminos):
+    print(i+1,"-",v.obtenerId())
+print(f"Se permite llevar hasta: {distancia_peso}Kg en el camino")
+print(f"El precio es de: ${int(distancia_precio)*1000}")

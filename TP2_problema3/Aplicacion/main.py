@@ -1,4 +1,4 @@
-from TP2_problema3.Modulos.grafo import Grafo
+from TP2_problema3.modulos.grafo import Grafo
 import matplotlib.pyplot as plt # Lo usamos para poder poner la ponderacion en el grafico
 import networkx as nx #Funcion para graficar Grafos.
 
@@ -17,6 +17,7 @@ with open("rutas.txt", "r") as arch:
             grafo.agregarVertice(nombre2)
         grafo.agregarArista(nombre1, nombre2, peso_max, costo)
 
+# PARTE GRAFCA
 G= nx.DiGraph() #crear un nuevo grafo de NetworkX
 for vertice in grafo.obtenerVertices(): #copia los nodos y aristas del grafo a G
     G.add_node(vertice)
@@ -25,9 +26,9 @@ for vertice in grafo.obtenerVertices():
         capacidad, precio = grafo.listaVertices[vertice].obtenerCapacidad(vecino), grafo.listaVertices[vertice].obtenerPrecio(vecino)
         G.add_edge(vertice, vecino.obtenerId(), capacidad=capacidad, precio=precio)
 
-pos = nx.spring_layout(G, k=0.5) #crea un diseño para el gráfico
+pos = nx.spring_layout(G, k=0.5) #Usamos la distribucion de "primavera" para una mejor visualizacion
 
-node_size = 100 #tamaño de vertices
+node_size = 100 #tamanio de vertices
 nx.draw_networkx_nodes(G, pos, node_size=node_size, node_color="lightblue") #representar los vertices
 nx.draw_networkx_edges(G, pos, arrows=True, edge_color="black", width=1.0) #representar las aristas
 
@@ -41,9 +42,8 @@ edge_labels = {(nodo_inicio, nodo_fin): (atributos["capacidad"], atributos["prec
 edge_font_size = 5
 nx.draw_networkx_edge_labels(G, pos, edge_labels=edge_labels, font_size=edge_font_size, label_pos=0.3)
 
-plt.figure(figsize=(12, 8)) #tamaño total del gráfico
-plt.axis('off') #muestra el gráfico
-plt.show()
+plt.axis('off') #oculta el recuadro
+plt.show() #muestra el gráfico
 
 #este fragemento sirve para imprimir el grafo en consola
 for vertice in grafo.obtenerVertices():

@@ -53,6 +53,7 @@ for vertice in grafo.obtenerVertices():
         print(f"Camino hacia {vecino.obtenerId()} - Peso máximo: {capacidad} - Precio: {costo}")
     print("\n")
 
+print('*'*100)
 inicio = "CiudadBs.As."
 destino = "S.delEstero"
 caminos, distancia_peso, distancia_precio= grafo.caminoCorto(grafo, inicio, destino)
@@ -60,5 +61,5 @@ caminos, distancia_peso, distancia_precio= grafo.caminoCorto(grafo, inicio, dest
 print(f"Ruta con mayor capacidad para transportar y menor costo para ir desde {inicio} hasta {destino} es:")
 for i, v in enumerate (caminos):
     print(i+1,"-",v.obtenerId())
-print(f"Se permite llevar hasta: {distancia_peso}Kg en el camino")
-print(f"El precio es de: ${int(distancia_precio)*1000}")
+print(f"Se permite llevar hasta {distancia_peso}Kg en el camino")
+print(f"El precio es de ${int(distancia_precio)*1000}")

@@ -1,5 +1,5 @@
-from TP2_problema3.modulos.Monticulo_1 import MonticuloBinario_Tupla_Minimo
-from TP2_problema3.modulos.Monticulo_2 import MonticuloBinario_Tupla_Maximo
+from TP2_problema3.Modulos.Monticulo_1 import MonticuloBinario_Tupla_Minimo
+from TP2_problema3.Modulos.Monticulo_2 import MonticuloBinario_Tupla_Maximo
 
 class Vertice:
     def __init__(self, clave):

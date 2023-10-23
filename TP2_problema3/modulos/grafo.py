@@ -1,129 +1,156 @@
-from TP2_problema3.modulos.Monticulo_1 import MonticuloBinario_Tupla_Minimo
-from TP2_problema3.modulos.Monticulo_2 import MonticuloBinarioMaximo
-
+from TP2_problema3.Modulos.Monticulo_1 import MonticuloBinario_Tupla_Minimo
+from TP2_problema3.Modulos.Monticulo_2 import MonticuloBinario_Tupla_Maximo
 
 class Vertice:
-    def __init__(self,clave):
+    def __init__(self, clave):
         self.id = clave
         self.conectadoA = {}
-        self.dist= float("inf")
-        self.predecesor= None
+        self.distancia = 0
+        self.predecesor = None
 
-    def agregarVecino(self,vecino, peso, costo): # Agrega un vertice vecino con su respectivo peso y costo.
-        self.conectadoA[vecino] = (peso, costo)
+    def agregarVecino(self, vecino, capacidad=0, precio=0):
+        self.conectadoA[vecino] = (capacidad, precio)
 
     def obtenerConexiones(self):
         return self.conectadoA.keys()
-    
+
     def obtenerId(self):
         return self.id
+
+    def obtenerCapacidad(self,vecino):
+        return self.conectadoA[vecino][0]
     
-    def obtenerPonderacion(self, vecino):
-        peso, costo= self.conectadoA[vecino]
-        return peso, costo
-    
+    def obtenerPrecio(self, vecino):
+        return self.conectadoA[vecino][1]
+
     def asignarDistancia(self, distancia):
-        self.dist= distancia
-    
+        self.distancia = distancia
+
     def obtenerDistancia(self):
-        return self.dist
-    
+        return self.distancia
+
     def asignarPredecesor(self, predecesor):
-        self.predecesor= predecesor
-    
+        self.predecesor = predecesor
+
     def obtenerPredecesor(self):
         return self.predecesor
-    
+
     def __str__(self):
-        return str(self.id) + ' conectadoA: ' + str([x.id for x in self.conectadoA])
+        return str(self.id)
     
+    def recorrer(x):
+        while (x.obtenerPredecesor()):
+            print(x.obtenerId())
+            x = x.obtenerPredecesor()
+        print(x.obtenerId())
+
 class Grafo:
     def __init__(self):
         self.listaVertices = {}
         self.numVertices = 0
 
-    def agregarVertice(self,clave):
-        self.numVertices += 1
-        nuevoVertice = Vertice(clave) # Crea un nuevo objeto de vertice con la clave dada
-        self.listaVertices[clave] = nuevoVertice #agregamos el vertice al diccionario.
-        return nuevoVertice
+    def agregarVertice(self, clave):
+        if clave not in self.listaVertices:
+            self.numVertices += 1
+            nuevoVertice = Vertice(clave)
+            self.listaVertices[clave] = nuevoVertice
+            return nuevoVertice
 
-    def obtenerVertice(self,n):
-        if n in self.listaVertices: 
-            return self.listaVertices[n] # Devuelve el vertice con la clave n si existe.
+    def obtenerVertice(self, n):
+        if n in self.listaVertices:
+            return self.listaVertices[n]
         else:
             return None
 
     def obtenerVertices(self):
-        return self.listaVertices.keys() #Devuelve las claves de todos los vertices en el grafo.
+        return self.listaVertices.keys()
 
-    def agregarArista(self, de , a, peso, costo=0):
-        #La seccion de los if comprueba si existe el vertice "A" y "B" en el diccionario, si no existen los agrega
+    def agregarArista(self, de, a, capacidad=0, precio=0):
         if de not in self.listaVertices:
             self.agregarVertice(de)
         if a not in self.listaVertices:
             self.agregarVertice(a)
-        
-        self.listaVertices[de].agregarVecino(self.listaVertices[a], peso, costo) #Con esta linea agregamos la arista con su peso y costo.
+        self.listaVertices[de].agregarVecino(self.listaVertices[a], capacidad, precio)
 
-
-    def dijkstra_precio(self, unGrafo, inicio_usuario, destino_usuario):
-        inicio= unGrafo.obtenerVertice(inicio_usuario) #elegimos la ciudad de origen
-        destino= unGrafo.obtenerVertice(destino_usuario)
-        cp = MonticuloBinario_Tupla_Minimo()  # montículo de máximo
-        inicio.asignarDistancia(0)
-        cp.construirMonticulo([(v.obtenerDistancia(), v) for v in unGrafo])
-
-        while not cp.estaVacia(): #Mientras que el monticulo no este vacio:
-            verticeActual = cp.eliminarMin() #eliminamos el minimo y lo guardamos en la variable "verticeActual"
-
-            if verticeActual[1] == destino: #Si el vertice actual es el que buscamos, cortamos aca
-                return destino.obtenerDistancia(), self.obtenerCamino(destino)
-
-            for verticeSiguiente in verticeActual[1].obtenerConexiones():
-                costo_arista= verticeActual[1].obtenerPonderacion(verticeSiguiente)[1]  #aca obtenemos el costo
-                nuevaDistancia = verticeActual[1].obtenerDistancia() + costo_arista
-                if nuevaDistancia < verticeSiguiente.obtenerDistancia():  #relajación
-                    verticeSiguiente.asignarDistancia(nuevaDistancia)
-                    verticeSiguiente.asignarPredecesor((verticeActual[1], costo_arista))  # Almacenamos el predecesor y el costo de la arista desde ese predecesor
-                    cp.decrementarClave(verticeSiguiente, nuevaDistancia)
-
-
-    def obtenerCamino(self, vertice): #Esta funcion nos sirve para retornar el camino y el precio que tomo el algoritmo de "dijkstra_precio"
-        actual = vertice
-        camino = []  # Inicializar camino
-        while actual is not None:
-            camino.append(actual.id)
-            if actual.predecesor is not None:# Si el vertice tiene un predecesor:
-                camino.append(actual.predecesor[1])  #agregamos el costo de la arista
-            if actual.predecesor is not None: # Actualizamos "actual" al predecesor
-                actual = actual.predecesor[0]
-            else:
-                actual = None
-        camino = camino[::-1]  # Invertimos la lista para que el camino vaya desde el inicio hasta el destino
+    def dijkstraCapacidad(self, unGrafo, inicio, destino):
+        cp = MonticuloBinario_Tupla_Maximo()
+        camino= []
+        if inicio in self.listaVertices:
+            inicio= self.obtenerVertice(inicio)
+            inicio.asignarDistancia(float('inf'))
+            cp.construirMonticulo([(v.obtenerDistancia(), v) for v in unGrafo])
+            while not cp.estaVacia():
+                verticeActual= cp.eliminarMax()
+                for verticeSiguiente in verticeActual[1].obtenerConexiones():
+                    nuevaDistancia= min(verticeActual[1].obtenerDistancia(), verticeActual[1].obtenerCapacidad(verticeSiguiente))
+                    if nuevaDistancia > verticeSiguiente.obtenerDistancia():
+                        verticeSiguiente.asignarDistancia(nuevaDistancia)
+                        verticeSiguiente.asignarPredecesor(verticeActual[1])
+                        cp.decrementarClave(verticeSiguiente, nuevaDistancia)
+                        if verticeSiguiente.obtenerId() == destino:
+                            nuevoGrafo= Grafo()
+                            destino= self.obtenerVertice(destino)
+                            while destino.obtenerPredecesor() is not None:
+                                predecesor = destino.obtenerPredecesor()
+                                ponderacion_primera = predecesor.obtenerCapacidad(destino)
+                                ponderacion_segunda = predecesor.obtenerPrecio(destino)
+                                nuevoGrafo.agregarArista(predecesor.obtenerId(), destino.obtenerId(), ponderacion_primera, ponderacion_segunda)
+                                destino = predecesor
+                            camino.append(nuevoGrafo)
         return camino
+    
+    def dijkstraPrecio(self, unGrafo, inicio):
+        for v in self.listaVertices.values():
+             v.asignarDistancia(float('inf'))
+        cp = MonticuloBinario_Tupla_Minimo()
+        if inicio in self.listaVertices:
+            inicio = self.obtenerVertice(inicio)
+            inicio.asignarDistancia(0)
+            cp.construirMonticulo([(v.obtenerDistancia(),v) for v in unGrafo])
+            while not cp.estaVacia():
+                verticeActual = cp.eliminarMin()
+                for verticeSiguiente in verticeActual[1].obtenerConexiones():
+                    nuevaDistancia = verticeActual[1].obtenerDistancia() + verticeActual[1].obtenerPrecio(verticeSiguiente)
+                    if nuevaDistancia < verticeSiguiente.obtenerDistancia():
+                        verticeSiguiente.asignarDistancia( nuevaDistancia )
+                        verticeSiguiente.asignarPredecesor(verticeActual[1])
+                        cp.decrementarClave(verticeSiguiente,nuevaDistancia)
 
-    def dijkstra_peso(self, unGrafo, inicio_usuario, destino_usuario):
-        pass
+    def camino(self, unGrafo, salida, destino):
+        if salida in unGrafo.listaVertices and destino in unGrafo.listaVertices:
+            grafo_peso = self.dijkstraCapacidad(unGrafo, salida, destino)
+            distancias = []
+        else:
+            raise RuntimeError("Verifique la ciudad de inicio o de destino")
+        if grafo_peso:
+            for grafo in grafo_peso:
+                grafo.dijkstraPrecio(grafo, salida)
+                distancia_precio = grafo.obtenerVertice(destino).obtenerDistancia()
+                distancias.append([grafo, distancia_precio])
 
-    def obtener_max_cuello_botella(self, unGrafo, origen, destino):
-        pass
+            grafo_distancia = min(distancias, key=lambda x: x[1])
 
-    def obtener_precio_minimo(self, unGrafo, origen, destino):
-        return self.dijkstra_precio(unGrafo, origen, destino)
+            distancia_precio = grafo_distancia[1]
+            distancia_peso = self.listaVertices[destino].obtenerDistancia()
 
+            caminos = []
+            actual = self.obtenerVertice(destino)
+            while actual is not None:
+                caminos.insert(0, actual)
+                actual = actual.obtenerPredecesor()
+
+            return caminos, distancia_peso, distancia_precio
+        else:
+            raise RuntimeError("No existe camino a ese destino")
+    
     def __iter__(self):
         return iter(self.listaVertices.values())
 
-    def __contains__(self,n):
+    def __contains__(self, n):
         return n in self.listaVertices
-    
+
     def __str__(self):
-        resultado= ""
-        for vertice in self.listaVertices.values():
-            resultado += f"{vertice.obtenerId()} --("
-            for vecino in vertice.obtenerConexiones():
-                costo= vertice.obtenerPonderacion(vecino)
-                resultado += f"{costo}, {vecino.obtenerId()})"
-                resultado += "\n"
+        resultado = ""
+        for valor in self.listaVertices.values():
+            resultado += f" {str(valor.id) } --> conectado a ---> { str([x for x in valor.conectadoA.keys()])}\n"
         return resultado

@@ -1,6 +1,6 @@
 class MonticuloBinario_Tupla_Maximo:
   def __init__(self):
-    self.tuplaMonticulo = [float("-inf")]  # Iniciamos el monticulo con un valor infinitamente negativo
+    self.tuplaMonticulo = [(float("-inf"),0)]  # Iniciamos el monticulo con un valor infinitamente negativo
     self.tamanoActual = 0
 
   def infiltArriba(self, indice_elemento):
@@ -42,24 +42,24 @@ class MonticuloBinario_Tupla_Maximo:
     self.infiltAbajo(1)  # Acomodamos la nueva raiz como corresponda
     return valorSacado
 
-  def construirMonticulo(self, unaLista):  # Construye un monticulo a partir de una lista
-    i = len(unaLista) // 2
-    self.tamanoActual = len(unaLista)
-    self.tuplaMonticulo = [0] + unaLista[:]
+  def construirMonticulo(self, unaLista): #Contruye un monticulo a partir de una lista
+    i= len(unaLista) // 2
+    self.tamanoActual= len(unaLista)
+    self.tuplaMonticulo = [(float('inf'), float('inf'))]
+    for v in unaLista:
+      self.tuplaMonticulo.append(v)
     while i > 0:
       self.infiltAbajo(i)
-      i -= 1
-
-  def decrementarClave(self, vertice, nueva_clave):
+      i -=1
+  
+  def incrementarClave(self, vertice, nueva_clave):
     for i in range(1, len(self.tuplaMonticulo)):
-      if self.tuplaMonticulo[i][1] == vertice: #Si encontramos el vertice que buscamos:
-        aux = self.tuplaMonticulo[i] # guardamos la tupla en una variable temporal
-        if nueva_clave > aux[0]: 
-          return
-        tupla = (nueva_clave, vertice)  
-        self.tuplaMonticulo[i] = tupla # reemplazamos la tupla "vieja" por la nueva
-        self.infiltArriba(i) #reordenamos el monticulo para mantener sus propiedades
+      if self.tuplaMonticulo[i][0] == vertice:
+        clave= i
         break
+    if clave > 0:
+      self.listaMonticulo[clave] = (nueva_clave, self.listaMonticulo[clave][1])
+      self.infiltArriba(clave)
 
   def estaVacia(self):
     return self.tamanoActual == 0

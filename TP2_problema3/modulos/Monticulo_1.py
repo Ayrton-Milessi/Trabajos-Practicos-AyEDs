@@ -1,6 +1,6 @@
 class MonticuloBinario_Tupla_Minimo:
   def __init__(self):
-    self.tuplaMonticulo=[float("inf")] # Iniciamos el monticulo con un valor infinito, para que cualquier otro valor sea menor
+    self.tuplaMonticulo=(0,0) # Iniciamos el monticulo con un valor infinito, para que cualquier otro valor sea menor
     self.tamanoActual= 0
 
   def infiltArriba(self, indice_elemento):
@@ -42,24 +42,21 @@ class MonticuloBinario_Tupla_Minimo:
     self.infiltAbajo(1) #acomodamos la nueva raiz como corresponda
     return valorSacado
   
-  def construirMonticulo(self, unaLista): #Contruye un monticulo a partir de una lista
-    i= len(unaLista) // 2
-    self.tamanoActual= len(unaLista)
-    self.tuplaMonticulo= [0] + unaLista[:]
+  def construirMonticulo(self, unaLista):  # Construye un monticulo a partir de una lista
+    i = len(unaLista) // 2
+    self.tamanoActual = len(unaLista)
+    self.tuplaMonticulo = [(0,0)]
+    for v in unaLista:
+      self.tuplaMonticulo.append(v)
     while i > 0:
       self.infiltAbajo(i)
-      i -=1
+      i -= 1
 
   def decrementarClave(self, vertice, nueva_clave):
-    for i in range(1, len(self.tuplaMonticulo)):
-      if self.tuplaMonticulo[i][1] == vertice:
-        aux= self.tuplaMonticulo[i]
-        if nueva_clave > aux[0]:
-          return
-        tupla= (nueva_clave, vertice)
-        self.tuplaMonticulo[i]= tupla
+    for i, v in enumerate(self.tuplaMonticulo[1:], start=1):
+      if v == vertice:
+        self.tuplaMonticulo[i]= (nueva_clave, v)
         self.infiltArriba(i)
-        break
 
   def estaVacia(self):
     return self.tamanoActual == 0

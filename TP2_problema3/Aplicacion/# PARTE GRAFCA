@@ -1,0 +1,27 @@
+# PARTE GRAFCA
+G= nx.DiGraph() #crear un nuevo grafo de NetworkX
+for vertice in grafo.obtenerVertices(): #copia los nodos y aristas del grafo a G
+    G.add_node(vertice)
+for vertice in grafo.obtenerVertices():
+    for vecino in grafo.listaVertices[vertice].obtenerConexiones():
+        capacidad, precio = grafo.listaVertices[vertice].obtenerCapacidad(vecino), grafo.listaVertices[vertice].obtenerPrecio(vecino)
+        G.add_edge(vertice, vecino.obtenerId(), capacidad=capacidad, precio=precio)
+
+pos = nx.spring_layout(G, k=0.5) #Usamos la distribucion de "primavera" para una mejor visualizacion
+
+node_size = 100 #tamanio de vertices
+nx.draw_networkx_nodes(G, pos, node_size=node_size, node_color="lightblue") #representar los vertices
+nx.draw_networkx_edges(G, pos, arrows=True, edge_color="black", width=1.0) #representar las aristas
+
+#etiquetar los vertices con sus id's
+labels = {nodo: nodo for nodo in G.nodes()}
+font_size = 7
+nx.draw_networkx_labels(G, pos, labels, font_size=font_size, verticalalignment="bottom")
+
+#etiquetar las aristas con los atributos (Capacidad y Precio)
+edge_labels = {(nodo_inicio, nodo_fin): (atributos["capacidad"], atributos["precio"]) for nodo_inicio, nodo_fin, atributos in G.edges(data=True)}
+edge_font_size = 5
+nx.draw_networkx_edge_labels(G, pos, edge_labels=edge_labels, font_size=edge_font_size, label_pos=0.3)
+
+plt.axis('off') #oculta el recuadro
+plt.show() #muestra el gráfico

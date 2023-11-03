@@ -5,10 +5,10 @@ class MonticuloMinimo:
         self.lista = []
 
     def insertar(self, k):
-        heapq.heappush(self.lista, k)
+        heapq.heappush(self, k)
 
     def eliminarMin(self):
-        return heapq.heappop(self.lista)
+        return heapq.heappop(self)
 
     def __len__(self):
         return len(self.lista)

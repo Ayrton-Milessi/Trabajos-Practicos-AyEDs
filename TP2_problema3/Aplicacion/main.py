@@ -1,5 +1,5 @@
-from TP2_problema3.Modulos.grafo import Grafo
-from TP2_problema3.Modulos.grafico import graficar
+from TP2_problema3.modulos.grafo import Grafo
+from TP2_problema3.modulos.grafico import graficar
 
 grafo= Grafo()
 with open("rutas.txt", "r") as arch:

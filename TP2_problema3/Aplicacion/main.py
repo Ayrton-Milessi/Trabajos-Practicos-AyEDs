@@ -21,13 +21,22 @@ while conf.lower() != "si" and conf.lower() != "no":
 resultado= graficar(grafo, conf)
 
 inicio= "CiudadBs.As."
-destino= input("Ingrese una ciudad como destino: ")
-while destino not in grafo.listaVertices:
-    print("Ingreso una ciudad que no es parte de los posibles caminos")
-    print("Las ciudades posibles son: ")
+show_all= input("Si desea ver todos los recorridos ingrese si: ").lower()
+if show_all == "si":
+    print("Todos los recorridos son:")
     for clave, valor in grafo.listaVertices.items():
-        print(f"{clave}")
-    print("\n")
+        print("----------------------------------------")
+        grafo.dijkstra(grafo, inicio, clave)
+
+else:
     destino= input("Ingrese una ciudad como destino: ")
 
-grafo.dijkstra(grafo, inicio, destino)
+    while destino not in grafo.listaVertices:
+        print("Ingreso una ciudad que no es parte de los posibles caminos")
+        print("Las ciudades posibles son: ")
+        for clave, valor in grafo.listaVertices.items():
+            print(f"{clave}")
+        print("\n")
+        destino= input("Ingrese una ciudad como destino: ")
+
+    grafo.dijkstra(grafo, inicio, destino)

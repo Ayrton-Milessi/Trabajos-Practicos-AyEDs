@@ -108,6 +108,8 @@ class Grafo:
                 ciudad_actual = anterior.get(ciudad_actual)
             camino.reverse()
             print(" -> ".join(camino))
+            if capacidad_minima[ciudad_destino] == float("inf"):
+                capacidad_minima[ciudad_destino] = 0
             print(f'Se permite llevar hasta {capacidad_minima[ciudad_destino]}Kg en el camino')
             print(f'El precio es de ${int(precio_minimo[ciudad_destino])*1000}')
     

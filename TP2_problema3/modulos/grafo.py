@@ -76,9 +76,10 @@ class Grafo:
         precio_minimo[ciudad_inicio] = 0
         
         cola_ciudades = [(-capacidad_minima[ciudad_inicio], ciudad_inicio)]
+        Monticulo = MonticuloMinimo()
         
         while cola_ciudades:
-            capacidad, ciudad = MonticuloMinimo.eliminarMin(cola_ciudades)
+            capacidad, ciudad = Monticulo.eliminarMin(cola_ciudades)
             capacidad = -capacidad
             
             if ciudad in visitados:
@@ -95,7 +96,7 @@ class Grafo:
                     capacidad_minima[vecino] = cuello_botella
                     precio_minimo[vecino] = precio
                     anterior[vecino] = ciudad
-                    MonticuloMinimo.insertar(cola_ciudades, (-cuello_botella, vecino))
+                    Monticulo.insertar(cola_ciudades, (-cuello_botella, vecino))
         
         if ciudad_destino not in capacidad_minima:
             print(f"No hay ruta directa desde {ciudad_inicio} a {ciudad_destino}.")

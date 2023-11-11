@@ -1,12 +1,13 @@
 import matplotlib.pyplot as plt
 import networkx as nx
 
-def graficar(grafo, confirmacion):
+def graficar(path, confirmacion):
+    """Esta funcion toma la direcion de un archivo y realiza un grafo dirigido"""
     if confirmacion.lower() == "si":
-        G = nx.Graph()
+        G = nx.DiGraph()
 
         # Lee nodos y aristas desde el archivo
-        with open("rutas.txt", "r") as arch:
+        with open(path, "r") as arch:
             archivo = arch.readlines()
             for x in archivo:
                 dato = x.strip().split(",")
@@ -28,7 +29,11 @@ def graficar(grafo, confirmacion):
         font_size = 7
         nx.draw_networkx_labels(G, pos, labels, font_size=font_size, verticalalignment="bottom")
 
-        edge_labels = {(nodo_inicio, nodo_fin): (atributos["capacidad"], atributos["precio"]) for nodo_inicio, nodo_fin, atributos in G.edges(data=True)}
+        edge_labels = {}
+        for nodo_inicio, nodo_fin, atributos in G.edges(data=True):
+            capacidad, precio = atributos["capacidad"], atributos["precio"]
+            edge_labels[(nodo_inicio, nodo_fin)] = (capacidad, precio)
+
         edge_font_size = 5
         nx.draw_networkx_edge_labels(G, pos, edge_labels=edge_labels, font_size=edge_font_size, label_pos=0.3)
 

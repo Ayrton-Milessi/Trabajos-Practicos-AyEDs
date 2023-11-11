@@ -51,7 +51,6 @@ class Grafo:
     def agregarVertice(self, clave): 
         if clave not in self.listaVertices:
             self.numVertices += 1
-            nuevoVertice = Vertice(clave) # Crea un nuevo objeto de vertice con la clave dada
             self.listaVertices[clave] = {} #agregamos el vertice al diccionario.
 
     def obtenerVertice(self, n):
@@ -72,6 +71,7 @@ class Grafo:
         precio_minimo = {}
         anterior = {}
         
+        #Inicializamos la capacidad y precio minimos para la ciudad de incio
         capacidad_minima[ciudad_inicio] = float('inf')
         precio_minimo[ciudad_inicio] = 0
         
@@ -81,16 +81,17 @@ class Grafo:
             capacidad, ciudad = MonticuloMinimo.heappop(cola_ciudades)
             capacidad = -capacidad
             
-            if ciudad in visitados:
+            if ciudad in visitados: #si ya visitamos la ciudad, continuamos a la siguiente iteracion
                 continue
             
-            visitados.add(ciudad)
+            visitados.add(ciudad) #marcamos la ciudad como visitada
             
             for vecino, (capacidad_vecino, precio) in grafo.listaVertices[ciudad].items():
                 cuello_botella = min(capacidad, capacidad_vecino)
                 precio_vecino = precio + precio_minimo[ciudad]  # Corrección para obtener el precio acumulado
                 precio = precio_vecino
                 
+                # Actualizamos la informacion del vecino si es una mejor opcion
                 if vecino not in visitados and cuello_botella > capacidad_minima.get(vecino, 0):
                     capacidad_minima[vecino] = cuello_botella
                     precio_minimo[vecino] = precio

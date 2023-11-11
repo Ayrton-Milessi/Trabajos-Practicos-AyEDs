@@ -1,8 +1,10 @@
 from TP2_problema3.modulos.grafo import Grafo
 from TP2_problema3.modulos.grafico import graficar
 
+path= "rutas.txt"
+
 grafo= Grafo()
-with open("rutas.txt", "r") as arch:
+with open(path, "r") as arch:
     archivo = arch.readlines()
     for x in archivo:
         dato = x.strip().split(",")
@@ -14,11 +16,11 @@ with open("rutas.txt", "r") as arch:
         grafo.agregarVertice(ciudad_destino)
         grafo.agregarArista(ciudad_inicio, ciudad_destino, capacidad_maxima, precio)
 
-conf=input("Ingrese 'si' para graficar el grafo. De lo contrario, ingrese 'no' ---> ")
-while conf.lower() != "si" and conf.lower() != "no":
+conf=input("Ingrese 'si' para graficar el grafo. De lo contrario, ingrese 'no' ---> ").lower()
+while conf != "si" and conf != "no":
     print("Ingreso una confirmacion incorrecta")
-    conf=input("Por favor ingrese 'si' o 'no' ---> ")
-resultado= graficar(grafo, conf)
+    conf=input("Por favor ingrese 'si' o 'no' ---> ").lower()
+resultado= graficar(path, conf)
 
 inicio= "CiudadBs.As."
 show_all= input("Si desea ver todos los recorridos ingrese si: ").lower()

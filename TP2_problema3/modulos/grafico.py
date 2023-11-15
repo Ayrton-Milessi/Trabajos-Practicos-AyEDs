@@ -3,7 +3,7 @@ import networkx as nx
 
 def graficar(path, confirmacion):
     """Esta funcion toma la direcion de un archivo y realiza un grafo dirigido"""
-    if confirmacion.lower() == "si":
+    if confirmacion == "si":
         G = nx.DiGraph()
 
         # Lee nodos y aristas desde el archivo
@@ -21,8 +21,7 @@ def graficar(path, confirmacion):
 
         pos = nx.spring_layout(G, k=0.5)
 
-        node_size = 100
-        nx.draw_networkx_nodes(G, pos, node_size=node_size, node_color="lightblue")
+        nx.draw_networkx_nodes(G, pos, node_size=100, node_color="lightblue")
         nx.draw_networkx_edges(G, pos, arrows=True, edge_color="black", width=1.0)
 
         labels = {nodo: nodo for nodo in G.nodes()}

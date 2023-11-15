@@ -91,7 +91,7 @@ class AVL:
                 nodo.padre.factor_equilibrio += 1 #si es hijo izquierdo, se suma uno al factor equilibrio del padre
             elif nodo.es_hijoDerecho():
                 nodo.padre.factor_equilibrio -= 1 #si es hijo derecho, se resta uno al factor equilibrio del padre
-            if nodo.padre.factor_equilibrio != 0: #si el factor equilibrio es igual 0 esta equilibrado el arbol
+            if nodo.padre.factor_equilibrio != 0: #si el factor equilibrio del padre no es 0, se llama a actualizar equilibrio en el padre
                 self.actualizar_equilibrio(nodo.padre)
     
     def agregar(self, clave, valor):
@@ -104,7 +104,7 @@ class AVL:
     def _agregar(self, clave, valor, nodoActual):
         if clave < nodoActual.clave: #si la clave es menor que la raiz, se va al subarbol izquierdo 
             if nodoActual.tiene_hijoIzquierdo(): 
-                self._agregar(clave, valor, nodoActual.hijoIzquierdo)#si ya tiene un hijo izquierdo, se llama recursivamente actulizando los valores a comparar
+                self._agregar(clave, valor, nodoActual.hijoIzquierdo)#si ya tiene un hijo izquierdo, se llama recursivamente actualizando los valores a comparar
             else:
                 nodoActual.hijoIzquierdo= Nodo_avl(clave, valor, padre=nodoActual)
                 self.actualizar_equilibrio(nodoActual.hijoIzquierdo)
@@ -126,7 +126,7 @@ class AVL:
             return None
         
     def _obtener(self, clave, nodoActual):
-        if not nodoActual: #
+        if not nodoActual: 
             return None
         elif nodoActual.clave == clave: #si el nodo que se busca es la raiz, retorna la raiz
             return nodoActual
@@ -148,7 +148,7 @@ class AVL:
             self.tamano= self.tamano - 1
         else:
             raise KeyError('Error, la clave no está en el árbol')
-        
+
     def rotarIzquierda(self, rotRaiz):
         nuevaRaiz= rotRaiz.hijoDerecho #guardamos el hijo derecho del punto de rotacion
         rotRaiz.hijoDerecho= nuevaRaiz.hijoIzquierdo #actualizamos los enlaces
